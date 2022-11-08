@@ -1,9 +1,17 @@
-import {View, Text, StyleSheet, Image } from 'react-native';
+import {View, StyleSheet, Image } from 'react-native';
 
 export const TopHeader = () => {
     return(
         <View style={styles.top}>
-            <Image source={require("../../../assets/icon.png")} style={{width:90, height:98}}/>
+            <Image source={require("../../../assets/logo.png")} style={{width:90, height:98}}/>
+        </View>
+    )
+}
+
+export const MainHeader = (props)=>{
+    return(
+        <View style={styles.MainTop}>
+            {props.children}
         </View>
     )
 }
@@ -14,7 +22,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: "black",
         height: "25%",
-        width:"100%",
-    
       },
+      MainTop: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "black",
+        height: "20%",
+        padding: 20,
+      }
 })

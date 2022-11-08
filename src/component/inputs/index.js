@@ -66,7 +66,7 @@ export const MainInput = ({
 };
 
 
-export const Selector = ({label, iconName, error, data, placeholder, onFocus = ()=>{}, onSelect = ()=>{}, ...props}) => {
+export const Selector = ({label, iconName, error, data, placeholder, onFocus = ()=>{}, onSelect = () => {}, ...props}) => {
  const [isFocused , setIsFocused] = useState(false);
  return (
   <View>
@@ -88,8 +88,8 @@ export const Selector = ({label, iconName, error, data, placeholder, onFocus = (
             onFocus();
             setIsFocused(true);
           }}
-          onSelect={() => {
-            onSelect();
+          onSelect={(selectedItem, index) => {
+            onSelect(selectedItem, index);
             setIsFocused(false);
           }}
           buttonStyle={style.dropdown2BtnStyle}

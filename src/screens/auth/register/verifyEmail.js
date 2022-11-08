@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text, TouchableOpacity} from "react-native";
+import { StyleSheet, Text, TouchableOpacity} from "react-native";
 import { useState } from "react";
 import {
   CodeField,
@@ -7,8 +7,8 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
-import { TopHeader } from "../../../component/header";
 import { useNavigation } from "@react-navigation/native";
+import Auth from "../../../layout/auth";
 
 const EmailVerification = ({ route }) => {
     const navigation = useNavigation();
@@ -19,13 +19,8 @@ const EmailVerification = ({ route }) => {
         setValue,
     });
   return (
-    <View style={styles.container}>
-        <TopHeader />
-          <View style={styles.content}>
-            <Text style={{ fontWeight: "bold", fontSize: 18, margin: 1, paddingVertical:10,alignSelf:'center' }}>
-              Enter verification code to verify your email
-            </Text>
-            <CodeField
+    <Auth title="Enter verification code to verify your email" bottomTitle="Ferification code was sent to shumbushoemilef@gmail.com">
+      <CodeField
               ref={ref}
               {...props}
               value={value}
@@ -45,14 +40,10 @@ const EmailVerification = ({ route }) => {
                 </Text>
               )}
             />
-            <Text style={{ fontWeight: "bold", fontSize: 15, margin: 1, paddingVertical: 10, alignSelf:'center' }}>
-              Ferification code will expire in 30 minutes
-            </Text>
             <TouchableOpacity onPress={()=>{navigation.navigate('completeRegistration')}}>
               <Text style={{ fontWeight: "bold", fontSize: 15 }}>Next</Text>
             </TouchableOpacity>
-          </View>
-    </View>
+    </Auth>
   );
 };
 

@@ -81,6 +81,7 @@ const PersonalInfo = (props) => {
                 handleErrors(null, "gender");
             }}
             onSelect={(selectedItem)=>{
+
                 setGender(selectedItem)
             }}
         />
@@ -89,33 +90,39 @@ const PersonalInfo = (props) => {
   };
 
 const Address = (props) => {
-    const province = [];
-    const district = [];
-    const sector = [];
-    const cell = [];
-    const village = [];
+    const { Provinces, Districts, Sectors, Cells, Villages } = require('rwanda');
+    const [selectedProvince, setSelectedProvince] = useState('');
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedSector, setSelectedSector] = useState('');
+    const [selectedCell, setSelectedCell] = useState('');
+    const [selectedVillage, setSelectedVillage] = useState('');
     return (
         <View>
         <Text style={styles.title}>{props.title}</Text>
          <Selector
-            data={province}
+            data={Provinces()}
+            onSelect={(selectedItem)=>{setSelectedProvince(selectedItem)}}
             placeholder={'Province'}
         />
          <Selector
-            data={district}
+            data={Districts(selectedProvince)}
             placeholder={'District'}
+            onSelect={(selectedItem)=>{setSelectedDistrict(selectedItem)}}
         />
         <Selector
-            data={sector}
+            data={Sectors(selectedProvince,selectedDistrict)}
             placeholder={'Sector'}
+            onSelect={(selectedItem)=>{setSelectedSector(selectedItem)}}
         />
         <Selector
-            data={cell}
+            data={Cells(selectedProvince,selectedDistrict,selectedSector)}
             placeholder={'Cell'}
+            onSelect={(selectedItem)=>{setSelectedCell(selectedItem)}}
         />
         <Selector
-            data={village}
+            data={Villages(selectedProvince,selectedDistrict,selectedSector,selectedCell)}
             placeholder={'Village'}
+            onSelect = {(selectedItem)=>{setSelectedVillage(selectedItem)}}
         />
         </View>
     );
@@ -166,7 +173,7 @@ const CompleteRegistration = ()=>{
                 content={content}
                 onNext={() => setActive((p) => p + 1)}
                 onBack={() => setActive((p) => p - 1)}
-                onFinish={() => Alert.alert("Finish")}
+                onFinish={() => navigation.navigate('dashboard')}
                 buttonStyle={styles.buttonStyle}
                 showButton={true}
                 buttonTextStyle={styles.buttonTextStyle}

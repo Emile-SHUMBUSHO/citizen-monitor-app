@@ -83,17 +83,17 @@ const Register = ()=>{
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("terms");
+                      navigation.navigate("terms");
                     }}
                   >
                     <Text style={{ fontWeight: "bold", left: 5 }}>
-                      Terms of services
+                      Terms of use
                     </Text>
                   </TouchableOpacity>
                   <Text style={{ left: 10, color: "#BABBC3" }}>and</Text>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("policy");
+                      navigation.navigate("policy");
                     }}
                   >
                     <Text style={{ fontWeight: "bold", left: 15 }}>

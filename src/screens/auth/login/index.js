@@ -5,11 +5,13 @@ import {
     Text,
     TouchableOpacity,
     Keyboard,
+    Image,
   } from "react-native";
 import { PrimaryButton } from "../../../component/buttons/";
 import { MainInput } from "../../../component/inputs";
 import { TopHeader } from "../../../component/header";
 import { useNavigation } from "@react-navigation/native";
+import ModalPoup from "../../../component/modal";
 
 const Login = (props)=>{
     const [inputs, setInputs] = useState({
@@ -33,7 +35,6 @@ const Login = (props)=>{
           handleErrors("please input valid email address", "email");
           isValid = false;
         }
-    
         if (!inputs.password) {
           handleErrors("please input password", "password");
           isValid = false;
@@ -42,10 +43,12 @@ const Login = (props)=>{
           isValid = false;
         }
         if (isValid) {
-          loginFunc();
+          navigation.navigate("dashboard");
         }
       };
     const navigation = useNavigation();
+    const [visible, setVisible] = useState(false)
+  
     return(
         <View style={styles.container}>
           <TopHeader/>
@@ -65,7 +68,6 @@ const Login = (props)=>{
                 handleErrors(null, "email");
               }}
             />
-  
             <MainInput
               onChangeText={(text) => handleOnChange(text, "password")}
               onFocus={() => handleErrors(null, "password")}
@@ -75,7 +77,6 @@ const Login = (props)=>{
               error={errors.password}
               password
             />
-  
             <View
               style={{
                 justifyContent: "flex-end",
@@ -84,16 +85,13 @@ const Login = (props)=>{
               }}
             >
               <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("emailVerification");
-                }}
+                onPress={() => setVisible(true)}
               >
                 <Text style={{ fontWeight: "bold", margin: 10 }}>
                   Forgot Password ?
                 </Text>
               </TouchableOpacity>
             </View>
-  
             <View
               style={{
                 justifyContent: "center",
@@ -118,6 +116,37 @@ const Login = (props)=>{
                 </TouchableOpacity>
               </View>
             </View>
+            {/* Modal component */}
+            <ModalPoup visible={visible}>
+              <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+                <TouchableOpacity
+                  onPress={() => setVisible(false)}
+                >
+                  <Image
+                    source={require("../../../../assets/x.png")}
+                    style={{ height: 20, width: 20 }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={{}}>
+                <MainInput
+                  style={styles.input}
+                  label="Email Address"
+                  placeholder="Enter your email address"
+                  iconName="email-outline"
+                  returnKey="next"
+                />
+              <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <PrimaryButton title="Submit" onPress={()=> navigation.navigate('paswordRecovery')} />
+            </View>
+              
+              </View>
+            </ModalPoup>
           </View>
       </View>
     )
