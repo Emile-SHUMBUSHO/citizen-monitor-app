@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TopHeader } from '../../../component/header';
 import { Selector } from '../../../component/inputs';
 import Stepper from "react-native-stepper-ui";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const PersonalInfo = (props) => {
     const [inputs, setInputs] = useState({
@@ -46,6 +47,24 @@ const PersonalInfo = (props) => {
     const [gender, setGender] = useState('');
     const maritalStatus = ['Married', 'Single', 'Divorced', 'Widowed'];
     const [marital, setMaritalStatus] = useState('');
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [date, setDate] = useState(null);
+    const showDatePicker = () => {
+      setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+      setDatePickerVisibility(false);
+    };
+    const handleConfirm = (date) => {
+      const selectedDate = new Date(date);
+      const chosenDate = `${selectedDate.getFullYear()}-${
+        selectedDate.getMonth() + 1
+      }-${selectedDate.getDate()}`;
+      setDate(chosenDate);
+      setInputs({ ...inputs, age: chosenDate });
+      hideDatePicker();
+    };
     return (
       <View>
         <Text style={styles.title}>{props.title}</Text>
@@ -65,11 +84,14 @@ const PersonalInfo = (props) => {
                 handleErrors(null, "email");
               }}
             />
-        <MainInput
-              placeholder="Telophone number"
+        <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
             />
         <MainInput
-              placeholder="Id number"
+              placeholder="Id number if any"
               onChangeText={(text) => handleOnChange(text, "email")}
               error={errors.email}
               onFocus={() => {
@@ -77,116 +99,34 @@ const PersonalInfo = (props) => {
               }}
             />
         <Selector
-            data={genderType}
-            placeholder={'Gender'}
-            onFocus={() =>{
-                handleErrors(null, "gender");
-            }}
-            onSelect={(selectedItem)=>{
+                    data={genderType}
+                    placeholder={'Gender'}
+                    onFocus={() =>{
+                        handleErrors(null, "gender");
+                    }}
+                    onSelect={(selectedItem)=>{
 
-                setGender(selectedItem)
-            }}
-        />
-        <Selector
-            data={maritalStatus}
-            placeholder={'Martual Status'}
-            onFocus={() =>{
-                handleErrors(null, "martualStatus");
-            }}
-            onSelect={(selectedItem)=>{
-
-              setMaritalStatus(selectedItem)
-            }}
-        />
+                        setGender(selectedItem)
+                    }}
+                />
       </View>
     );
   };
 
-const Address = (props) => {
-    const { Provinces, Districts, Sectors, Cells, Villages } = require('rwanda');
-    const [selectedProvince, setSelectedProvince] = useState('');
-    const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [selectedSector, setSelectedSector] = useState('');
-    const [selectedCell, setSelectedCell] = useState('');
-    const [selectedVillage, setSelectedVillage] = useState('');
-    const [selectedIsibo, setSelectedIsibo] = useState('');
-    const isiboData = ['Bwiza', 'Keza', 'Umurinzi', 'Ganza', 'Ubutwari', 'Kirenga', 'Ubuhoro', 'Tabaro' ];
-    return (
-        <View>
-        <Text style={styles.title}>{props.title}</Text>
-         <Selector
-            data={Provinces()}
-            onSelect={(selectedItem)=>{setSelectedProvince(selectedItem)}}
-            placeholder={'Province'}
-        />
-         <Selector
-            data={Districts(selectedProvince)}
-            placeholder={'District'}
-            onSelect={(selectedItem)=>{setSelectedDistrict(selectedItem)}}
-        />
-        <Selector
-            data={Sectors(selectedProvince,selectedDistrict)}
-            placeholder={'Sector'}
-            onSelect={(selectedItem)=>{setSelectedSector(selectedItem)}}
-        />
-        <Selector
-            data={Cells(selectedProvince,selectedDistrict,selectedSector)}
-            placeholder={'Cell'}
-            onSelect={(selectedItem)=>{setSelectedCell(selectedItem)}}
-        />
-        <Selector
-            data={Villages(selectedProvince,selectedDistrict,selectedSector,selectedCell)}
-            placeholder={'Village'}
-            onSelect = {(selectedItem)=>{setSelectedVillage(selectedItem)}}
-        />
-        <Selector
-            data={isiboData}
-            placeholder={'Isibo'}
-            onSelect = {(selectedItem)=>{setSelectedIsibo(selectedItem)}}
-        />
-        </View>
-    );
-};
 
-const RoleAndPassword = (props) => {
-    const roles = ['Mudugudu', 'Mutwarasibo', 'Umuturage']
-    const [role, setRole] = useState('');
-    return (
-      <View>
-        <Text style={styles.title}>{props.title}</Text>
-        <Selector
-            data={roles}
-            placeholder={'Register as'}
-            onSelect={(selectedItem)=>{
-                setRole(selectedItem);
-            }}
-        />
-        <MainInput
-              placeholder="Password"
-              iconName="lock-outline"
-              password
-            />
-        <MainInput
-              placeholder="Confirm password"
-              iconName="lock-outline"
-              password
-            />
-      </View>
-    );
-  };
 
 const content = [
     <PersonalInfo title="Personal information" />,
-    <Address title="Address" />,
-    <RoleAndPassword title="Select role and create password" />,
     ];
 
-const CompleteRegistration = ()=>{
+const RegisterFamilyMember = ()=>{
     const [active, setActive] = useState(0);
     const navigation = useNavigation();
     return(
     <View style={styles.container}>
-        <TopHeader/>
+        <TopHeader>
+          <Text>Register Family Member</Text>
+        </TopHeader>
           <View style={styles.content}>
             <Stepper
                 active={active}
@@ -213,7 +153,7 @@ const CompleteRegistration = ()=>{
     </View>
     )
 }
-export default CompleteRegistration;
+export default RegisterFamilyMember;
 
 const styles = StyleSheet.create({
     container: {

@@ -3,10 +3,11 @@ import { Text, ScrollView, TouchableOpacity, View } from 'react-native';
 import { MainHeader } from '../../component/header';
 import { Container, Content } from '../../component/ui/containers';
 import { Card } from 'react-native-paper';
-import { Selector } from '../../component/inputs';
+import { Selector, MainInput } from '../../component/inputs';
 import { PrimaryButton } from '../../component/buttons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+
 const Migrate = () => {
     const { Provinces, Districts, Sectors, Cells, Villages } = require('rwanda');
     const [selectedProvince, setSelectedProvince] = useState('');
@@ -30,11 +31,15 @@ const Migrate = () => {
             <Content>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Text style={{paddingVertical: 20}}>Are you permanent residence or renting</Text>
-                    <Card style={{paddingHorizontal: 10, backgroundColor: '#f8f9fa'}}>
+                    <Card style={{paddingHorizontal: 10, paddingVertical: 10, backgroundColor: '#f8f9fa'}}>
                         <Selector
                             data={homeInfo}
                             onSelect={(selectedItem)=>{setSelectedHomeInfo(selectedItem)}}
                             placeholder={'Home status'}
+                        />
+                        <MainInput
+                            placeholder={"Umubare wabagize umuryango"}
+                            keyboardType='numeric'
                         />
                     </Card>
                     <Text style={{paddingVertical: 20}}>Choose your next home address information</Text>
@@ -66,7 +71,7 @@ const Migrate = () => {
                     />
                     </Card>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <PrimaryButton title="Submit"/>
+                        <PrimaryButton onPress={()=> navigation.navigate('RegisterFamilyMember')} title="Submit"/>
                     </View>
                 </ScrollView>
             </Content>

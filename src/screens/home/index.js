@@ -31,10 +31,10 @@ const Home = () => {
                     alignItems: "center",
                     borderRadius: 5,
                     padding: 10,
-                    marginVertical: 40
+                    marginVertical: 20
                 }}>
                     <View>
-                        <Text>Wants to migrate?</Text>
+                        <Text>Ibaruze mu mudugudu</Text>
                         <Text>It's easy start now</Text>
                     </View>
                     <TouchableOpacity onPress={()=> navigation.navigate('migrate')}>
@@ -42,6 +42,34 @@ const Home = () => {
                     </TouchableOpacity>
                     
             </View>
+
+            <View style={{
+                    backgroundColor: "white",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                    width: 0,
+                    height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderRadius: 5,
+                    padding: 10,
+                    marginVertical: 20
+                }}>
+                    <View>
+                        <Text>Menyekanisha abashyitsi</Text>
+                        <Text>It's easy start now</Text>
+                    </View>
+                    <TouchableOpacity onPress={()=> navigation.navigate('migrate')}>
+                        <AntDesign name="rightcircle" size={24} color="black" />
+                    </TouchableOpacity>
+                    
+            </View>
+
             <Text style={{marginVertical:20, fontSize: 18, fontWeight:'700'}}>Your current residence</Text>
             <Card>
                 <View style={{padding: 10}}>

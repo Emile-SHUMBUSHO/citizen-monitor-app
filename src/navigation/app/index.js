@@ -12,6 +12,7 @@ import TermsOfUse from '../../screens/termsOfUse';
 import Notification from '../../screens/notification';
 import Migrate from '../../screens/migrate';
 import PasswordRecovery from '../../screens/auth/login/passwordRecovery';
+import RegisterFamilyMember from '../../screens/familyMember/register';
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -29,6 +30,7 @@ function AppNavigator() {
         <Stack.Screen name="terms" component={TermsOfUse} />
         <Stack.Screen name="policy" component={PrivacyPolicy} />
         <Stack.Screen name="migrate" component={Migrate} />
+        <Stack.Screen name="RegisterFamilyMember" component={RegisterFamilyMember} />
       </Stack.Navigator>
     </NavigationContainer>
   );
