@@ -64,7 +64,7 @@ const Home = () => {
                         <Text>Menyekanisha abashyitsi</Text>
                         <Text>It's easy start now</Text>
                     </View>
-                    <TouchableOpacity onPress={()=> navigation.navigate('migrate')}>
+                    <TouchableOpacity onPress={()=> navigation.navigate('vistor')}>
                         <AntDesign name="rightcircle" size={24} color="black" />
                     </TouchableOpacity>
                     

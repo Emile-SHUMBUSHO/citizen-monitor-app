@@ -13,12 +13,13 @@ import Notification from '../../screens/notification';
 import Migrate from '../../screens/migrate';
 import PasswordRecovery from '../../screens/auth/login/passwordRecovery';
 import RegisterFamilyMember from '../../screens/familyMember/register';
+import Vistor from '../../screens/vistors';
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='onboarding' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='dashboard' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" component={Onboarding}/>
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="register" component={Register} />
@@ -31,6 +32,7 @@ function AppNavigator() {
         <Stack.Screen name="policy" component={PrivacyPolicy} />
         <Stack.Screen name="migrate" component={Migrate} />
         <Stack.Screen name="RegisterFamilyMember" component={RegisterFamilyMember} />
+        <Stack.Screen name="vistor" component={Vistor} />
       </Stack.Navigator>
     </NavigationContainer>
   );
