@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import COLORS from "../../infrastructure/theme/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import SelectDropdown from 'react-native-select-dropdown';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 export const MainInput = ({
   label,
@@ -111,6 +111,43 @@ export const Selector = ({label, iconName, error, data, placeholder, onFocus = (
       )}
   </View>
  )
+}
+
+export const DatePickerSelector = ({showMode, birthDate, defaultText}) => {
+  return(
+    <TouchableWithoutFeedback onPress={()=> showMode('date')}>
+        <View style={{
+            height: 50,
+            backgroundColor: "white",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 2,
+            flexDirection: "row",
+            paddingHorizontal: 15,
+            marginVertical: 10,
+            borderWidth: 0.5,
+            borderRadius: 20,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        }}>
+            {birthDate === null ? (
+                <Text style={{ fontSize: 14, color: 'grey' }}>
+                {defaultText}
+                </Text>
+            ) : (
+                <Text style={{ fontSize: 14, color: 'grey' }}>
+                {birthDate}
+                </Text>
+            )}
+            <MaterialIcons name="date-range" size={24} color="black" />
+        </View>
+    </TouchableWithoutFeedback>
+  )
 }
 
 const style = StyleSheet.create({

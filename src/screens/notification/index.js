@@ -9,10 +9,16 @@ const Notification = () => {
     return(
         <Container>
             <MainHeader>
+              <View style={{
+                flexDirection: "row",
+                alignItems: "center",
+                padding: 10
+              }}>
                 <TouchableOpacity onPress={()=>navigation.goBack()}>
                     <AntDesign name="arrowleft" size={24} color="white" />
                 </TouchableOpacity>
-                <Text style={{color: '#fff', marginHorizontal:100}}>Notifications</Text>
+                <Text style={{color: '#fff', marginHorizontal:20}}>Notifications</Text>
+              </View>
             </MainHeader>
             <Content>
             <View style={styles.notification_card}>

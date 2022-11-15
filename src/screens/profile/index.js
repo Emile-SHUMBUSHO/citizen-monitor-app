@@ -15,8 +15,13 @@ const Profile = () => {
     return (
         <Container>
             <MainHeader>
-                <Image source={require('../../../assets/profile.webp')} style={{width: 50, height: 50, borderRadius:30}}/>
-                <Text style={{color: '#fff', paddingHorizontal: 100}}>SHUMBUSHO Emile</Text>
+                <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    padding: 10}}>
+                    <Image source={require('../../../assets/profile.webp')} style={{width: 50, height: 50, borderRadius:30}}/>
+                    <Text style={{color: '#fff', paddingHorizontal: 10}}>SHUMBUSHO Emile</Text>
+                </View>
             </MainHeader>
             <Content>
                 <TouchableOpacity

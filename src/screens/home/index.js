@@ -12,8 +12,15 @@ const Home = () => {
      return(
         <Container>
             <MainHeader>
-                <Text style={{color: "white"}}>Hello, John.</Text>
-                <Notification title="5" onPress={()=>navigation.navigate('notification')}/>
+                <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: 10
+                    }}>
+                    <Text style={{color: "white"}}>Hello, John.</Text>
+                    <Notification title="5" onPress={()=>navigation.navigate('notification')}/>
+                </View>
             </MainHeader>
             <Content>
             <View style={{

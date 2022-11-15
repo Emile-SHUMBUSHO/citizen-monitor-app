@@ -200,14 +200,6 @@ const CompleteRegistration = ()=>{
                 wrapperStyle={styles.wrapperStyle}
                 stepStyle={styles.stepStyle}
             />
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                paddingVertical: 20
-              }}
-            >
-            </View>
           </View>
       <StatusBar style="light" />
     </View>

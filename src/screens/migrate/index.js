@@ -16,23 +16,30 @@ const Migrate = () => {
     const [selectedCell, setSelectedCell] = useState('');
     const [selectedVillage, setSelectedVillage] = useState('');
     const navigation = useNavigation();
-    const homeInfo = ['Permanent residence', 'Renting'];
+    const homeInfo = ['Ndatuye', 'Ndakodesha'];
+    const [familyNumber, setFamilyNumber] = useState(null);
     const [selectedHomeInfo, setSelectedHomeInfo] = useState('');
     const isibo = ['Ubumwe', 'Bwiza', 'Buhoro'];
     const [selectedIsibo, setSelectedIsibo] = useState('');
     return(
         <Container>
             <MainHeader>
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
+                <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    padding: 10
+                }}>
+                    <TouchableOpacity onPress={()=>navigation.goBack()}>
                     <AntDesign name="arrowleft" size={24} color="white" />
-                </TouchableOpacity>
-                <Text style={{color: '#fff', marginHorizontal:20}}>Saba kubarurwa mu mudugudu utuyemo</Text>
+                    </TouchableOpacity>
+                    <Text style={{color: '#fff', marginHorizontal:20}}>Saba kubarurwa mu mudugudu utuyemo</Text>
+                </View>
             </MainHeader>
             <Content>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={{paddingVertical: 20}}>Are you permanent residence or renting</Text>
                     <Card style={{paddingHorizontal: 10, paddingVertical: 10, backgroundColor: '#f8f9fa'}}>
                         <Selector
+                            label="Uratuye Cyangwa Urakodesha?"
                             data={homeInfo}
                             onSelect={(selectedItem)=>{setSelectedHomeInfo(selectedItem)}}
                             placeholder={'Home status'}
@@ -40,6 +47,8 @@ const Migrate = () => {
                         <MainInput
                             placeholder={"Umubare wabagize umuryango"}
                             keyboardType='numeric'
+                            returnKey='next'
+                            onChangeText={(text)=> setFamilyNumber(text)}
                         />
                     </Card>
                     <Text style={{paddingVertical: 20}}>Choose your next home address information</Text>
@@ -71,7 +80,7 @@ const Migrate = () => {
                     />
                     </Card>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <PrimaryButton onPress={()=> navigation.navigate('RegisterFamilyMember')} title="Submit"/>
+                        <PrimaryButton onPress={()=> navigation.navigate('RegisterFamilyMember',{familyNumber})} title="Submit"/>
                     </View>
                 </ScrollView>
             </Content>

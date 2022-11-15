@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { View, Modal, Animated, StyleSheet } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const ModalPoup = ({ visible, children }) => {
   const [showModal, setShowModal] = useState(visible);
@@ -39,6 +40,34 @@ const ModalPoup = ({ visible, children }) => {
     </Modal>
   );
 };
+
+
+export const DateAndTimePicker = ({setBirthDate, show, setShow, setDate, date, mode}) => {
+
+  const onChange = (event, selectedDate) => {
+      const currentDate = selectedDate;
+      setShow(Platform.OS === 'ios');
+      setDate(currentDate);
+      let tempDate = new Date(currentDate);
+      let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
+      setBirthDate(fDate);
+  }
+
+  return(
+    <>
+      {show &&
+        <DateTimePicker
+            testID='dateTimePicker'
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display='default'
+            onChange={onChange}
+        />
+      }
+    </>
+  )
+}
 
 const styles = StyleSheet.create({
   modalBackGround: {

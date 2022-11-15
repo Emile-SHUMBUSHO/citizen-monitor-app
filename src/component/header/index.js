@@ -24,11 +24,8 @@ const styles = StyleSheet.create({
         height: "25%",
       },
       MainTop: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
         backgroundColor: "black",
-        height: "20%",
-        padding: 20,
+        justifyContent: 'center',
+        paddingVertical: 40
       }
 })
