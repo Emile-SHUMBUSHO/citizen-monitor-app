@@ -15,7 +15,10 @@ import { MainHeader } from "../../../component/header";
 import { DateAndTimePicker } from "../../../component/modal";
 
 const PersonalInfo = (props) => { 
-    const gender = ['Male', 'Female'];
+    const genderStatus = ['Male', 'Female'];
+    const isano = ['Uwo mwashakkanye', 'Umwana', 'Umukozi', 'Umuvandimwe', 'Nta sano dufitanye'];
+    const [relation, setRelation] = useState('');
+    const [gender, setGender] = useState('');
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -39,9 +42,14 @@ const PersonalInfo = (props) => {
             returnKey='next'
         />
         <Selector
-            data={gender}
-            onSelect={(selectedItem)=>{setSelectedHomeInfo(selectedItem)}}
+            data={genderStatus}
+            onSelect={(selectedItem)=>{setGender(selectedItem)}}
             placeholder={'Gender'}
+        />
+        <Selector
+          data={isano}
+          onSelect={(selectedItem)=>{setRelation(selectedItem)}}
+          placeholder={'Isano'}
         />
         <DatePickerSelector
             showMode={showMode}

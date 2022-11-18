@@ -6,7 +6,7 @@ import Register from '../../screens/auth/register';
 import EmailVerification from '../../screens/auth/register/verifyEmail';
 import CompleteRegistration from '../../screens/auth/register/register';
 import Onboarding from '../../screens/onboarding';
-import DashboardTabs from '../../component/ui/navigation/bottom';
+import UmuturageDashboard from '../../component/ui/navigation/umuturage';
 import PrivacyPolicy from '../../screens/privacyPolicy';
 import TermsOfUse from '../../screens/termsOfUse';
 import Notification from '../../screens/notification';
@@ -14,25 +14,32 @@ import Migrate from '../../screens/migrate';
 import PasswordRecovery from '../../screens/auth/login/passwordRecovery';
 import RegisterFamilyMember from '../../screens/familyMember/register';
 import Vistor from '../../screens/vistors';
+import Settings from '../../screens/settings';
+import MuduguduDashboard from '../../component/ui/navigation/mudugudu';
+import MutwaraSiboDashboard from '../../component/ui/navigation/mutwaraSibo';
+
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='onboarding' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='umuturage' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" component={Onboarding}/>
         <Stack.Screen name="login" component={Login} />
         <Stack.Screen name="register" component={Register} />
         <Stack.Screen name="emailVerification" component={EmailVerification} />
         <Stack.Screen name="paswordRecovery" component={PasswordRecovery} />
         <Stack.Screen name="completeRegistration" component={CompleteRegistration} />
-        <Stack.Screen name="dashboard" component={DashboardTabs} />
+        <Stack.Screen name="umuturage" component={UmuturageDashboard} />
         <Stack.Screen name="notification" component={Notification} />
         <Stack.Screen name="terms" component={TermsOfUse} />
         <Stack.Screen name="policy" component={PrivacyPolicy} />
         <Stack.Screen name="migrate" component={Migrate} />
         <Stack.Screen name="RegisterFamilyMember" component={RegisterFamilyMember} />
         <Stack.Screen name="vistor" component={Vistor} />
+        <Stack.Screen name="settings" component={Settings}/>
+        <Stack.Screen name="mudugudu" component={MuduguduDashboard}/>
+        <Stack.Screen name="mutwaraSibo" component={MutwaraSiboDashboard}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

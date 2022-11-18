@@ -1,28 +1,13 @@
-import React, { useState} from "react";
-import { StatusBar } from "expo-status-bar";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { MainHeader } from "../../component/header";
-import { Container, Content } from "../../component/ui/containers";
-import { Notification } from "../../component/notification";
 import { AntDesign } from '@expo/vector-icons';
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import HomeWrapper from "../../layout/main";
 const Home = () => {
     const navigation = useNavigation();
      return(
-        <Container>
-            <MainHeader>
-                <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: 10
-                    }}>
-                    <Text style={{color: "white"}}>Hello, John.</Text>
-                    <Notification title="5" onPress={()=>navigation.navigate('notification')}/>
-                </View>
-            </MainHeader>
-            <Content>
+        <HomeWrapper title="Hello, John" navigation={()=>navigation.navigate('notification')}>
             <View style={{
                     backgroundColor: "white",
                     shadowColor: "#000",
@@ -97,9 +82,7 @@ const Home = () => {
                     <AntDesign name="rightcircle" size={24} color="black" />
                 </View>
             </Card>
-            </Content>
-            <StatusBar style="light"/>
-        </Container>
+        </HomeWrapper>
     )
 }
 const styles = StyleSheet.create({

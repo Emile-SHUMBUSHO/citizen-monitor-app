@@ -1,23 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, FontAwesome, Ionicons } from '@expo/vector-icons';
-import  Home  from '../../../../screens/home';
+import  Home  from '../../../../screens/umuturage';
 import Profile from '../../../../screens/profile';
 import Search from '../../../../screens/search';
+import MainNavigator from '../main';
 const Tab = createBottomTabNavigator();
 
-function DashboardTabs() {
+function UmuturageDashboard() {
   return (
-    <Tab.Navigator
-      style={{ paddingVertical: 20 }}
-      screenOptions={{
-        headerShown: false,
-        tabBarInactiveTintColor: 'grey',
-        tabBarActiveTintColor: 'light-grey',
-        tabBarActiveBackgroundColor: 'white',
-        tabBarInactiveBackgroundColor: 'white',
-        tabBarStyle: [{ display: 'flex' }, null],
-      }}>
+    <MainNavigator>
       <Tab.Screen
         name="Home"
         component={Home}
@@ -39,8 +31,8 @@ function DashboardTabs() {
           tabBarIcon: ({ color, size }) => <FontAwesome name="user-circle" size={24} color="black" />,
         }}
       />
-    </Tab.Navigator>
+    </MainNavigator>
   );
 }
 
-export default DashboardTabs;
+export default UmuturageDashboard;

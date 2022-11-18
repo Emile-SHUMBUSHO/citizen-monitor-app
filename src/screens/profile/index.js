@@ -1,6 +1,9 @@
 import { Text, View, TouchableOpacity, StyleSheet, Image} from "react-native";
 import { Container, Content } from "../../component/ui/containers";
 import { MainHeader } from "../../component/header";
+import FamilyVistor from "../vistors/list";
+import FamilyMember from "../familyMember/list";
+import MigrationHistory from "../migrate/history";
 import {
     Feather,
     MaterialIcons,
@@ -10,8 +13,13 @@ import {
     AntDesign,
   } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+
 const Profile = () => {
     const navigation = useNavigation();
+    const [vistorVisible, setVistorVisible] = useState(false);
+    const [familyVisible, setFamilyVisible] = useState(false);
+    const [migrateHistoryVisible, setMigrateHistoryVisible] = useState(false);
     return (
         <Container>
             <MainHeader>
@@ -25,6 +33,7 @@ const Profile = () => {
             </MainHeader>
             <Content>
                 <TouchableOpacity
+                onPress={()=> navigation.navigate('settings')}
                 style={styles.touchableOpacity}
             >
                 <Ionicons name="md-settings-outline" size={24} color="black" />
@@ -44,6 +53,14 @@ const Profile = () => {
                     <Feather name="share-2" size={24} color="black" />
                     <Text style={{ left: 10 }}>Share</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity style={styles.touchableOpacity} onPress={()=> navigation.navigate('mutwaraSibo')}>
+                    <Text style={{ left: 10 }}>Mutwara sibo</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.touchableOpacity} onPress={()=> navigation.navigate("mudugudu")}>
+                    <Text style={{ left: 10 }}>Mudugudu</Text>
+                </TouchableOpacity>
                 <View
                     style={{
                     width: "90%",
@@ -53,15 +70,15 @@ const Profile = () => {
                     }}
                 />
 
-                <TouchableOpacity style={styles.touchableOpacity}>
+                <TouchableOpacity style={styles.touchableOpacity} onPress={()=> setFamilyVisible(true)}>
                     <MaterialIcons name="family-restroom" size={24} color="black" />
                     <Text style={{ left: 10 }}>Abagize umuryango</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.touchableOpacity}>
+                <TouchableOpacity style={styles.touchableOpacity} onPress={()=> setVistorVisible(true)}>
                     <AntDesign name="addusergroup" size={24} color="black" />
                     <Text style={{ left: 10 }}>Abashyitsi mu muryango</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.touchableOpacity}>
+                <TouchableOpacity style={styles.touchableOpacity} onPress={()=> setMigrateHistoryVisible(true)}>
                     <FontAwesome name="line-chart" size={24} color="black" />
                     <Text style={{ left: 10 }}>Migration history</Text>
                 </TouchableOpacity>
@@ -72,6 +89,18 @@ const Profile = () => {
                     <MaterialIcons name="logout" size={24} color="black" />
                     <Text style={{ left: 10 }}>Log Out</Text>
                 </TouchableOpacity>
+                <FamilyMember 
+                    visible={familyVisible}
+                    setVisible={setFamilyVisible}
+                />
+                <FamilyVistor
+                    visible={vistorVisible}
+                    setVisible={setVistorVisible}
+                />
+                <MigrationHistory 
+                    visible={migrateHistoryVisible}
+                    setVisible={setMigrateHistoryVisible}
+                />
             </Content>
         </Container>
     )
