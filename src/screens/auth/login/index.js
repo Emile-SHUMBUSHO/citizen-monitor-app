@@ -43,7 +43,7 @@ const Login = (props)=>{
           isValid = false;
         }
         if (isValid) {
-          navigation.navigate("dashboard");
+          navigation.navigate("umuturage");
         }
       };
     const navigation = useNavigation();

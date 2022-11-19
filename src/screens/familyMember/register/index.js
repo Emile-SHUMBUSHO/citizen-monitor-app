@@ -101,7 +101,7 @@ const RegisterFamilyMember = ({route})=>{
                 content={content}
                 onNext={() => setActive((p) => p + 1)}
                 onBack={() => setActive((p) => p - 1)}
-                onFinish={() => navigation.navigate('dashboard')}
+                onFinish={() => navigation.navigate('umuturage')}
                 buttonStyle={styles.buttonStyle}
                 showButton={true}
                 buttonTextStyle={styles.buttonTextStyle}

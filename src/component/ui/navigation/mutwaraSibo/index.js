@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, FontAwesome, Ionicons } from '@expo/vector-icons';
 import  Home  from '../../../../screens/mutwaraSibo';
 import Profile from '../../../../screens/profile';
-import Search from '../../../../screens/search';
+import Citizens from '../../../../screens/isibo';
 import MainNavigator from '../main';
 const Tab = createBottomTabNavigator();
 
@@ -18,10 +18,10 @@ function MutwaraSiboDashboard() {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={Search}
+        name="Citizen"
+        component={Citizens}
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="ios-search-circle-sharp" size={24} color="black" />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="people-circle" size={24} color="black" />,
         }}
       />
       <Tab.Screen

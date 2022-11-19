@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../../screens/auth/login';
 import Register from '../../screens/auth/register';
 import EmailVerification from '../../screens/auth/register/verifyEmail';
-import CompleteRegistration from '../../screens/auth/register/register';
+import StartingRegistration from '../../screens/auth/register/register';
 import Onboarding from '../../screens/onboarding';
 import UmuturageDashboard from '../../component/ui/navigation/umuturage';
 import PrivacyPolicy from '../../screens/privacyPolicy';
@@ -17,6 +17,8 @@ import Vistor from '../../screens/vistors';
 import Settings from '../../screens/settings';
 import MuduguduDashboard from '../../component/ui/navigation/mudugudu';
 import MutwaraSiboDashboard from '../../component/ui/navigation/mutwaraSibo';
+import RegisterSuccess from '../../screens/auth/register/onRegisterSuccess';
+import CompleteRegistaration from '../../screens/auth/register/completeRegister'
 
 const Stack = createNativeStackNavigator();
 
@@ -25,11 +27,6 @@ function AppNavigator() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName='umuturage' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" component={Onboarding}/>
-        <Stack.Screen name="login" component={Login} />
-        <Stack.Screen name="register" component={Register} />
-        <Stack.Screen name="emailVerification" component={EmailVerification} />
-        <Stack.Screen name="paswordRecovery" component={PasswordRecovery} />
-        <Stack.Screen name="completeRegistration" component={CompleteRegistration} />
         <Stack.Screen name="umuturage" component={UmuturageDashboard} />
         <Stack.Screen name="notification" component={Notification} />
         <Stack.Screen name="terms" component={TermsOfUse} />
@@ -40,6 +37,13 @@ function AppNavigator() {
         <Stack.Screen name="settings" component={Settings}/>
         <Stack.Screen name="mudugudu" component={MuduguduDashboard}/>
         <Stack.Screen name="mutwaraSibo" component={MutwaraSiboDashboard}/>
+        <Stack.Screen name="login" component={Login} />
+        <Stack.Screen name="register" component={Register} />
+        <Stack.Screen name="emailVerification" component={EmailVerification} />
+        <Stack.Screen name="paswordRecovery" component={PasswordRecovery} />
+        <Stack.Screen name="startingRegistration" component={StartingRegistration} />
+        <Stack.Screen name="onRegisterSuccess" component={RegisterSuccess}/>
+        <Stack.Screen name="completeRegisteration" component={CompleteRegistaration}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

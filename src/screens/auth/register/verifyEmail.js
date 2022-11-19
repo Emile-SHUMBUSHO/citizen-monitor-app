@@ -40,7 +40,7 @@ const EmailVerification = ({ route }) => {
                 </Text>
               )}
             />
-            <TouchableOpacity onPress={()=>{navigation.navigate('completeRegistration')}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('startingRegistration')}}>
               <Text style={{ fontWeight: "bold", fontSize: 15 }}>Next</Text>
             </TouchableOpacity>
     </Auth>

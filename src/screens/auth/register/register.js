@@ -181,7 +181,7 @@ const content = [
     <RoleAndPassword title="Select role and create password" />,
     ];
 
-const CompleteRegistration = ()=>{
+const StartingRegistration = ()=>{
     const [active, setActive] = useState(0);
     const navigation = useNavigation();
     return(
@@ -193,7 +193,7 @@ const CompleteRegistration = ()=>{
                 content={content}
                 onNext={() => setActive((p) => p + 1)}
                 onBack={() => setActive((p) => p - 1)}
-                onFinish={() => navigation.navigate('dashboard')}
+                onFinish={() => navigation.navigate('onRegisterSuccess')}
                 buttonStyle={styles.buttonStyle}
                 showButton={true}
                 buttonTextStyle={styles.buttonTextStyle}
@@ -205,7 +205,7 @@ const CompleteRegistration = ()=>{
     </View>
     )
 }
-export default CompleteRegistration;
+export default StartingRegistration;
 
 const styles = StyleSheet.create({
     container: {
