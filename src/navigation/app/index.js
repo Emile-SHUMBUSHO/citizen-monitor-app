@@ -19,7 +19,7 @@ import MuduguduDashboard from '../../component/ui/navigation/mudugudu';
 import MutwaraSiboDashboard from '../../component/ui/navigation/mutwaraSibo';
 import RegisterSuccess from '../../screens/auth/register/onRegisterSuccess';
 import CompleteRegistaration from '../../screens/auth/register/completeRegister'
-
+import RequestSuccess from '../../screens/familyMember/register/onRegisterSuccess';
 const Stack = createNativeStackNavigator();
 
 function AppNavigator() {
@@ -44,6 +44,7 @@ function AppNavigator() {
         <Stack.Screen name="startingRegistration" component={StartingRegistration} />
         <Stack.Screen name="onRegisterSuccess" component={RegisterSuccess}/>
         <Stack.Screen name="completeRegisteration" component={CompleteRegistaration}/>
+        <Stack.Screen name="success" component={RequestSuccess} />
       </Stack.Navigator>
     </NavigationContainer>
   );

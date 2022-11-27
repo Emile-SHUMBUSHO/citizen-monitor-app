@@ -13,6 +13,7 @@ import Stepper from "react-native-stepper-ui";
 import { AntDesign } from '@expo/vector-icons';
 import { MainHeader } from "../../../component/header";
 import { DateAndTimePicker } from "../../../component/modal";
+import ConfirmLeft from "./successModel";
 
 const PersonalInfo = (props) => { 
     const genderStatus = ['Male', 'Female'];
@@ -72,6 +73,7 @@ const PersonalInfo = (props) => {
 
 
 const RegisterFamilyMember = ({route})=>{
+  const [successModal, setSuccessModal] = useState(false);
     const {familyNumber} = route.params;
     const content = [
       ];
@@ -101,7 +103,7 @@ const RegisterFamilyMember = ({route})=>{
                 content={content}
                 onNext={() => setActive((p) => p + 1)}
                 onBack={() => setActive((p) => p - 1)}
-                onFinish={() => navigation.navigate('umuturage')}
+                onFinish={() =>setSuccessModal(true)}
                 buttonStyle={styles.buttonStyle}
                 showButton={true}
                 buttonTextStyle={styles.buttonTextStyle}
@@ -117,6 +119,10 @@ const RegisterFamilyMember = ({route})=>{
             >
             </View>
           </View>
+          <ConfirmLeft
+            visible={successModal}
+            setVisible={setSuccessModal}
+          />
       <StatusBar style="light" />
     </View>
     )
