@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator();
 function AppNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='umuturage' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='onboarding' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="onboarding" component={Onboarding}/>
         <Stack.Screen name="umuturage" component={UmuturageDashboard} />
         <Stack.Screen name="notification" component={Notification} />

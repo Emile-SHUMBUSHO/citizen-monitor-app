@@ -1,15 +1,19 @@
+import action from "../actions/action";
 import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILED,
-  LOGIN_GET_USER_INFO,
-  LOGIN_GET_USER_INFO_SUCCESS,
-  LOGIN_GET_USER_INFO_FAILED,
   LOGIN_STATE,
+  CHECK_EMAIL_SUCCESS,
+  CHECK_EMAIL_FAILED,
   REGISTER_NEW_USER_SUCCESS,
   REGISTER_NEW_USER_FAILED,
   LOADING_STATE,
-  CLEAR_ALL_ERRORS,
   SHOW_AUTH_TOAST,
+  VERIFY_OTP_LOADING,
+  VERIFY_OTP_SUCCESS,
+  VERIFY_OTP_FAILED,
+  LOGOUT_USER,
+  CHECK_EMAIL_REQUEST
 } from "../types";
 
 const initialState = {
@@ -18,13 +22,13 @@ const initialState = {
   isError: false,
   isLoading: false,
   isLoggedIn: false,
-  isGuest: false,
   userInfo: [],
   userToken: [],
   register: null,
   logout: null,
   success: false,
   showAuthToast: false,
+  email: null,
 };
 export default (state = initialState, { type, payload }) => {
   switch (type) {
@@ -46,28 +50,25 @@ export default (state = initialState, { type, payload }) => {
         isError: true,
         userInfo: "",
       };
-    case LOGIN_GET_USER_INFO:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case LOGIN_GET_USER_INFO_SUCCESS:
+    case CHECK_EMAIL_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        userInfo: payload,
+        error: "",
+        success: true,
+        email: payload,
       };
-    case LOGIN_GET_USER_INFO_FAILED:
+    case CHECK_EMAIL_FAILED:
       return {
         ...state,
         error: payload,
         isError: true,
-      };
+        isLoading: false,
+      }
     case REGISTER_NEW_USER_SUCCESS:
       return {
         ...state,
         register: true,
-        userToken: payload,
         isLoggedIn: true,
         isLoading: false,
         error: "",
@@ -85,18 +86,6 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isLoading: payload,
       };
-    case CLEAR_ALL_ERRORS:
-      return {
-        ...state,
-        error: [],
-        isError: false,
-      };
-    case BROWSE_AS_GUEST:
-      return {
-        ...state,
-        isGuest: payload,
-        isError: false,
-      };
     case LOGOUT_USER:
       return {
         ...state,
@@ -110,7 +99,7 @@ export default (state = initialState, { type, payload }) => {
         register: [],
         logout: Math.random(),
         success: false,
-      };
+      }
     case SHOW_AUTH_TOAST:
       return {
         showAuthToast: payload,

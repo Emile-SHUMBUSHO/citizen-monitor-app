@@ -9,8 +9,11 @@ import {
 } from "react-native-confirmation-code-field";
 import { useNavigation } from "@react-navigation/native";
 import Auth from "../../../layout/auth";
+import { useSelector, useDispatch } from "react-redux";
 
 const EmailVerification = ({ route }) => {
+    const { email } = useSelector((state) => state.auth);
+    console.log(email);
     const navigation = useNavigation();
     const [value, setValue] = useState("");
     const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });

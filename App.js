@@ -1,8 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import AppNavigator from './src/navigation/app';
+import AppNavigator from "./src/navigation/app";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
 
 export default function App() {
   return (
-    <AppNavigator />
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
 }
