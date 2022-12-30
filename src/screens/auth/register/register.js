@@ -1,244 +1,217 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  StyleSheet,
-  Keyboard,
-  Text,
-  Alert,
-} from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { PrimaryButton } from "../../../component/buttons";
 import { MainInput } from "../../../component/inputs";
-import { useNavigation } from '@react-navigation/native';
-import { TopHeader } from '../../../component/header';
-import { Selector } from '../../../component/inputs';
-import Stepper from "react-native-stepper-ui";
+import { useNavigation } from "@react-navigation/native";
+import { TopHeader } from "../../../component/header";
+import { Selector } from "../../../component/inputs";
+import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { registerNewUser } from "../../../redux/actions/authAction";
+import Loader from "../../../component/loader/loader";
+import { Toast } from "../../../component/toaster";
 
-const PersonalInfo = (props) => {
-    const [inputs, setInputs] = useState({
-        fullName: "",
-        email: "",
-        role: "",
-        password: "",
-      });
-    
-      const [errors, setErrors] = useState({});
-      const handleOnChange = (text, input) => {
-        setInputs((prevState) => ({ ...prevState, [input]: text }));
-      };
-      const handleErrors = (errorMessage, input) => {
-        setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
-      };
-      const validate = () => {
-        Keyboard.dismiss();
-        let isValid = true;
-        if (!inputs.email) {
-          handleErrors("Email or telephone number required", "email");
-          isValid = false;
-        } else if (!inputs.email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-          handleErrors("Invalid email", "email");
-          isValid = false;
-        }
-        if (isValid) {
-        }
-      };
-    const genderType = ['Male', 'Female'];
-    const [gender, setGender] = useState('');
-    const maritalStatus = ['Married', 'Single', 'Divorced', 'Widowed'];
-    const [marital, setMaritalStatus] = useState('');
-    return (
-      <View>
-        <Text style={styles.title}>{props.title}</Text>
-        <MainInput
-              placeholder="First name"
-              onChangeText={(text) => handleOnChange(text, "email")}
-              error={errors.email}
-              onFocus={() => {
-                handleErrors(null, "email");
-              }}
-            />
-        <MainInput
-              placeholder="Last name"
-              onChangeText={(text) => handleOnChange(text, "email")}
-              error={errors.email}
-              onFocus={() => {
-                handleErrors(null, "email");
-              }}
-            />
-        <MainInput
-              placeholder="Telophone number"
-            />
-        <MainInput
-              placeholder="Id number"
-              onChangeText={(text) => handleOnChange(text, "email")}
-              error={errors.email}
-              onFocus={() => {
-                handleErrors(null, "email");
-              }}
-            />
-        <Selector
-            data={genderType}
-            placeholder={'Gender'}
-            onFocus={() =>{
-                handleErrors(null, "gender");
-            }}
-            onSelect={(selectedItem)=>{
-
-                setGender(selectedItem)
-            }}
-        />
-        <Selector
-            data={maritalStatus}
-            placeholder={'Martual Status'}
-            onFocus={() =>{
-                handleErrors(null, "martualStatus");
-            }}
-            onSelect={(selectedItem)=>{
-
-              setMaritalStatus(selectedItem)
-            }}
-        />
-      </View>
-    );
+const StartingRegistration = () => {
+  const { isLoading, showAuthToast } = useSelector((state) => state.auth);
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("746446");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const genderType = ["Male", "Female"];
+  const [gender, setGender] = useState("");
+  const maritalStatus = ["Married", "Single", "Divorced", "Widowed"];
+  const [marital, setMaritalStatus] = useState("");
+  const [active, setActive] = useState(0);
+  const navigation = useNavigation();
+  // select address
+  const { Provinces, Districts, Sectors, Cells, Villages } = require("rwanda");
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedSector, setSelectedSector] = useState("");
+  const [selectedCell, setSelectedCell] = useState("");
+  const [selectedVillage, setSelectedVillage] = useState("");
+  const [selectedIsibo, setSelectedIsibo] = useState("");
+  const isiboData = [
+    "Bwiza",
+    "Keza",
+    "Umurinzi",
+    "Ganza",
+    "Ubutwari",
+    "Kirenga",
+    "Ubuhoro",
+    "Tabaro",
+  ];
+  const userInfo = {
+    email: email,
+    code: code,
+    firstName: firstName,
+    lastName: lastName,
+    phoneNumber: phone,
+    password: password,
+    ID: id,
+    province: selectedProvince,
+    district: selectedDistrict,
+    sector: selectedSector,
+    cell: selectedCell,
   };
 
-const Address = (props) => {
-    const { Provinces, Districts, Sectors, Cells, Villages } = require('rwanda');
-    const [selectedProvince, setSelectedProvince] = useState('');
-    const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [selectedSector, setSelectedSector] = useState('');
-    const [selectedCell, setSelectedCell] = useState('');
-    const [selectedVillage, setSelectedVillage] = useState('');
-    const [selectedIsibo, setSelectedIsibo] = useState('');
-    const isiboData = ['Bwiza', 'Keza', 'Umurinzi', 'Ganza', 'Ubutwari', 'Kirenga', 'Ubuhoro', 'Tabaro' ];
-    return (
-        <View>
-        <Text style={styles.title}>{props.title}</Text>
-         <Selector
-            data={Provinces()}
-            onSelect={(selectedItem)=>{setSelectedProvince(selectedItem)}}
-            placeholder={'Province'}
-        />
-         <Selector
-            data={Districts(selectedProvince)}
-            placeholder={'District'}
-            onSelect={(selectedItem)=>{setSelectedDistrict(selectedItem)}}
-        />
-        <Selector
-            data={Sectors(selectedProvince,selectedDistrict)}
-            placeholder={'Sector'}
-            onSelect={(selectedItem)=>{setSelectedSector(selectedItem)}}
-        />
-        <Selector
-            data={Cells(selectedProvince,selectedDistrict,selectedSector)}
-            placeholder={'Cell'}
-            onSelect={(selectedItem)=>{setSelectedCell(selectedItem)}}
-        />
-        <Selector
-            data={Villages(selectedProvince,selectedDistrict,selectedSector,selectedCell)}
-            placeholder={'Village'}
-            onSelect = {(selectedItem)=>{setSelectedVillage(selectedItem)}}
-        />
-        <Selector
-            data={isiboData}
-            placeholder={'Isibo'}
-            onSelect = {(selectedItem)=>{setSelectedIsibo(selectedItem)}}
-        />
-        </View>
-    );
-};
-
-const RoleAndPassword = (props) => {
-    const roles = ['Mudugudu', 'Mutwarasibo', 'Umuturage']
-    const [role, setRole] = useState('');
-    return (
-      <View>
-        <Text style={styles.title}>{props.title}</Text>
-        <Selector
-            data={roles}
-            placeholder={'Register as'}
-            onSelect={(selectedItem)=>{
-                setRole(selectedItem);
-            }}
-        />
-        <MainInput
-              placeholder="Password"
-              iconName="lock-outline"
-              password
-            />
-        <MainInput
-              placeholder="Confirm password"
-              iconName="lock-outline"
-              password
-            />
-      </View>
-    );
+  const getUserEmail = async () => {
+    const response = await AsyncStorage.getItem("email");
+    const email = JSON.parse(response).email;
+    setEmail(email);
   };
-
-const content = [
-    <PersonalInfo title="Personal information" />,
-    <Address title="Address" />,
-    <RoleAndPassword title="Select role and create password" />,
-    ];
-
-const StartingRegistration = ()=>{
-    const [active, setActive] = useState(0);
-    const navigation = useNavigation();
-    return(
+  useEffect(() => {
+    getUserEmail();
+  }, []);
+  const dispatch = useDispatch();
+  const registerCitizen = () => {
+    dispatch(registerNewUser(userInfo)).then(() => {
+      setTimeout(() => {
+        navigation.navigate("login");
+      }, 3000);
+    });
+  };
+  return (
     <View style={styles.container}>
-        <TopHeader/>
-          <View style={styles.content}>
-            <Stepper
-                active={active}
-                content={content}
-                onNext={() => setActive((p) => p + 1)}
-                onBack={() => setActive((p) => p - 1)}
-                onFinish={() => navigation.navigate('onRegisterSuccess')}
-                buttonStyle={styles.buttonStyle}
-                showButton={true}
-                buttonTextStyle={styles.buttonTextStyle}
-                wrapperStyle={styles.wrapperStyle}
-                stepStyle={styles.stepStyle}
-            />
-          </View>
+      <Loader visible={isLoading} />
+      <TopHeader />
+      <ScrollView style={styles.content}>
+        <Text style={styles.title}>Personal information</Text>
+        <MainInput
+          placeholder="First name"
+          onChangeText={(text) => setFirstName(text)}
+        />
+        <MainInput
+          placeholder="Last name"
+          onChangeText={(text) => setLastName(text)}
+        />
+        <MainInput
+          placeholder="Telophone number"
+          onChangeText={(text) => setPhone(text)}
+        />
+        <MainInput
+          placeholder="Id number"
+          onChangeText={(text) => setId(text)}
+        />
+        <Selector
+          data={genderType}
+          placeholder={"Gender"}
+          onSelect={(selectedItem) => {
+            setGender(selectedItem);
+          }}
+        />
+        <Selector
+          data={maritalStatus}
+          placeholder={"Martual Status"}
+          onSelect={(selectedItem) => {
+            setMaritalStatus(selectedItem);
+          }}
+        />
+        <Selector
+          data={Provinces()}
+          onSelect={(selectedItem) => {
+            setSelectedProvince(selectedItem);
+          }}
+          placeholder={"Province"}
+        />
+        <Selector
+          data={Districts(selectedProvince)}
+          placeholder={"District"}
+          onSelect={(selectedItem) => {
+            setSelectedDistrict(selectedItem);
+          }}
+        />
+        <Selector
+          data={Sectors(selectedProvince, selectedDistrict)}
+          placeholder={"Sector"}
+          onSelect={(selectedItem) => {
+            setSelectedSector(selectedItem);
+          }}
+        />
+        <Selector
+          data={Cells(selectedProvince, selectedDistrict, selectedSector)}
+          placeholder={"Cell"}
+          onSelect={(selectedItem) => {
+            setSelectedCell(selectedItem);
+          }}
+        />
+        <Selector
+          data={Villages(
+            selectedProvince,
+            selectedDistrict,
+            selectedSector,
+            selectedCell
+          )}
+          placeholder={"Village"}
+          onSelect={(selectedItem) => {
+            setSelectedVillage(selectedItem);
+          }}
+        />
+        <Selector
+          data={isiboData}
+          placeholder={"Isibo"}
+          onSelect={(selectedItem) => {
+            setSelectedIsibo(selectedItem);
+          }}
+        />
+        <MainInput
+          placeholder="Create Password"
+          iconName="lock-outline"
+          password
+          onChangeText={(text) => setPassword(text)}
+        />
+        <MainInput
+          placeholder="Confirm password"
+          iconName="lock-outline"
+          password
+        />
+        <View style={{marginVertical:40, display:'flex', justifyContent:'center', alignItems:'center'}}>
+          <PrimaryButton title="Register" onPress={() => registerCitizen()} />
+        </View>
+      </ScrollView>
+      <Toast shown={showAuthToast} message="Account created successfully" />
       <StatusBar style="light" />
     </View>
-    )
-}
+  );
+};
 export default StartingRegistration;
 
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor: "black",
-      height:"100%"
-    },
-    content: {
-      height: "75%",
-      flex: 1,
-      backgroundColor: "white",
-      flexDirection: "column",
-      justifyContent: "flex-start",
-      padding: 20,
-      borderTopRightRadius:25,
-      borderTopLeftRadius:25,    
-    },
+  container: {
+    backgroundColor: "black",
+    height: "100%",
+  },
+  content: {
+    height: "75%",
+    flex: 1,
+    backgroundColor: "white",
+    flexDirection: "column",
+    padding: 20,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+  },
 
-    stepStyle: {
-        backgroundColor: "black",
-    },
-    title: {
-        paddingVertical: 10,
-        alignSelf: "center",
-    },
-    buttonStyle: {
-        marginVertical: 20,
-        backgroundColor: "black",
-        width: 100,
-        justifyContent: "center",
-        alignItems: "center",
-        marginHorizontal: 50
-    },
-    wrapperStyle: {
-        justifyContent: 'center',
-    }
-  });
+  stepStyle: {
+    backgroundColor: "black",
+  },
+  title: {
+    paddingVertical: 10,
+    alignSelf: "center",
+  },
+  buttonStyle: {
+    marginVertical: 20,
+    backgroundColor: "black",
+    width: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 50,
+  },
+  wrapperStyle: {
+    justifyContent: "center",
+  },
+});

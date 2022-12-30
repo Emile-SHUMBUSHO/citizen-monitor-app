@@ -14,12 +14,19 @@ import {
   } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import { Logout } from "../../redux/actions/authAction";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
     const navigation = useNavigation();
     const [vistorVisible, setVistorVisible] = useState(false);
     const [familyVisible, setFamilyVisible] = useState(false);
     const [migrateHistoryVisible, setMigrateHistoryVisible] = useState(false);
+    const dispatch = useDispatch();
+    const logutUser = ()=>{
+        dispatch(Logout());
+
+    }
     return (
         <Container>
             <MainHeader>
@@ -84,7 +91,7 @@ const Profile = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.touchableOpacity}
-                    onPress={()=> navigation.navigate('login')}
+                    onPress={logutUser}
                 >
                     <MaterialIcons name="logout" size={24} color="black" />
                     <Text style={{ left: 10 }}>Log Out</Text>

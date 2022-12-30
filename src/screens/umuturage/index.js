@@ -1,11 +1,19 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import HomeWrapper from "../../layout/main";
+import { userInfo } from "../../utils/userInfo";
 const Home = () => {
     const navigation = useNavigation();
+    const [userInformations, setUserInformations] = useState();
+    console.log(userInformations?.profile?.firstName);
+    useEffect(()=>{
+        userInfo().then((response)=>{
+            setUserInformations(response); 
+        })
+    },[]);
      return(
         <HomeWrapper title="Hello, John" navigation={()=>navigation.navigate('notification')}>
             <View style={{

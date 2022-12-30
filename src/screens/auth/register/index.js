@@ -18,8 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkEmail } from "../../../redux/actions/authAction";
 
 const Register = () => {
-  const { isLoading, showAuthToast } = useSelector((state) => state.auth);
-  console.log(showAuthToast);
+  const { isLoading, showAuthToast} = useSelector((state) => state.auth);
   const [checked, setChecked] = useState(false);
   const [inputs, setInputs] = useState({
     email: "",

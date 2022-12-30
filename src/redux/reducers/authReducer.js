@@ -9,15 +9,15 @@ import {
   REGISTER_NEW_USER_FAILED,
   LOADING_STATE,
   SHOW_AUTH_TOAST,
-  VERIFY_OTP_LOADING,
   VERIFY_OTP_SUCCESS,
   VERIFY_OTP_FAILED,
+  INIT_LOGIN_USER,
   LOGOUT_USER,
-  CHECK_EMAIL_REQUEST
 } from "../types";
 
 const initialState = {
   initialLogin: false,
+  logoutSuccess: false,
   error: [],
   isError: false,
   isLoading: false,
@@ -30,6 +30,7 @@ const initialState = {
   showAuthToast: false,
   email: null,
 };
+
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case LOGIN_STATE:
@@ -50,6 +51,14 @@ export default (state = initialState, { type, payload }) => {
         isError: true,
         userInfo: "",
       };
+    case INIT_LOGIN_USER:
+      return {
+        ...state,
+        error: '',
+        isError: false,
+        userToken: payload,
+        initialLogin: true
+      };
     case CHECK_EMAIL_SUCCESS:
       return {
         ...state,
@@ -64,7 +73,22 @@ export default (state = initialState, { type, payload }) => {
         error: payload,
         isError: true,
         isLoading: false,
-      }
+      };
+    case VERIFY_OTP_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: "",
+        success: true,
+        userInfo: payload,
+      };
+    case VERIFY_OTP_FAILED:
+      return {
+        ...state,
+        error: payload,
+        isError: true,
+        isLoading: false,
+      };
     case REGISTER_NEW_USER_SUCCESS:
       return {
         ...state,
@@ -90,6 +114,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         initialLogin: false,
+        logoutSuccess: true,
         error: [],
         isError: false,
         isLoading: false,
@@ -99,7 +124,7 @@ export default (state = initialState, { type, payload }) => {
         register: [],
         logout: Math.random(),
         success: false,
-      }
+      };
     case SHOW_AUTH_TOAST:
       return {
         showAuthToast: payload,

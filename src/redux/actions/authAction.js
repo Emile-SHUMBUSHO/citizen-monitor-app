@@ -14,11 +14,10 @@ import {
   REGISTER_NEW_USER_FAILED,
   LOADING_STATE,
   SHOW_AUTH_TOAST,
-  VERIFY_OTP_LOADING,
   VERIFY_OTP_SUCCESS,
   VERIFY_OTP_FAILED,
+  INIT_LOGIN_USER,
   LOGOUT_USER,
-  CHECK_EMAIL_REQUEST
 } from "../types";
 
 export const loginUser = (user) => async (dispatch) => {
@@ -26,38 +25,58 @@ export const loginUser = (user) => async (dispatch) => {
   try {
     const response = await axios({
       method: "POST",
-      url: `${api_url}/auth/login/public`,
+      url: `https://citizen-monitor.onrender.com/auth/login/public`,
       data: user,
     });
-    const data = await response.json();
-    await AsyncStorage.setItem('AuthData', JSON.stringify(data));
     dispatch(action(LOGIN_STATE, false));
-    dispatch(action(LOGIN_USER_SUCCESS, response.data));
+    if(response.status >= 400){
+      dispatch(action(LOGIN_USER_FAILED, response.error));
+    }else{
+      await AsyncStorage.setItem('AuthData', JSON.stringify(response.data));
+      dispatch(action(LOGIN_USER_SUCCESS, response.data));
+    }
   } catch (error) {
-    dispatch(action(LOGIN_STATE, false));
-    dispatch(action(LOGIN_USER_FAILED, error.response.data.errors));
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      dispatch(action(LOGIN_USER_FAILED, error.response.data));
+      dispatch(action(LOGIN_USER_FAILED, error.response.status));
+      dispatch(action(LOGIN_USER_FAILED, error.response.headers));
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      dispatch(action(LOGIN_USER_FAILED, error.request));
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      dispatch(action(LOGIN_USER_FAILED, error.message));
+    }
+    dispatch(action(LOGIN_USER_FAILED, error.config));
   }
 };
 
-export const Init = async (dispatch) => {
-  dispatch(action(LOGIN_STATE, true));
+export const Init = () => {
+  return async (dispatch) => {
     try {
-      let response = await AsyncStorage.getItem('AuthData');
-      let authToken = JSON.parse(response)?.token;
-      dispatch(action(LOGIN_STATE, authToken));
+      const res = await AsyncStorage.getItem('AuthData');
+      const token = JSON.parse(res)?.token;
+      dispatch(action(INIT_LOGIN_USER, token));
     }
     catch (err) {
       alert(err.message);
     }
+  };
 };
 
-export const Logout = async(dispatch) => {
+export const Logout = () => {
+  return async (dispatch) => {
     try {
       await AsyncStorage.removeItem('AuthData').token;
-      dispatch(action(LOGOUT_USER));
+      dispatch(action(LOGOUT_USER, true));
     } catch (err) {
       alert(err.message);
     }
+  };
 };
 
 export const checkEmail = (email) => async(dispatch) => {
@@ -78,7 +97,8 @@ export const checkEmail = (email) => async(dispatch) => {
         if (response.status >= 400) {
           dispatch(action(CHECK_EMAIL_FAILED, userInfo.error));
         } else {
-          dispatch(action(CHECK_EMAIL_SUCCESS, userInfo.response));
+          await AsyncStorage.setItem('email', JSON.stringify(userInfo.response));
+          dispatch(action(CHECK_EMAIL_SUCCESS, userInfo.response.email));
         }
     } catch (err) {
       dispatch(action(CHECK_EMAIL_FAILED, err.message));
@@ -86,39 +106,74 @@ export const checkEmail = (email) => async(dispatch) => {
 }
 
 
-export const verifyOtp = (data) => async (dispatch) => {
-  dispatch(action(VERIFY_OTP_LOADING, true));
+export const verifyOtp = (verifyData) => async (dispatch) => {
+  dispatch(action(LOADING_STATE, true));
   try {
     const response = await axios({
       method: "POST",
-      url: `${api_url}/auth/register/verify-otp`,
-      data: data,
+      url: "https://citizen-monitor.onrender.com/auth/register/verify-otp",
+      data: verifyData,
     });
-
-    dispatch(action(VERIFY_OTP_SUCCESS, response));
+    dispatch(action(LOADING_STATE, false));
+    if(response >= 400){
+      dispatch(action(VERIFY_OTP_FAILED, error));
+    }else{
+      dispatch(action(LOADING_STATE, false));
+      dispatch(action(VERIFY_OTP_SUCCESS, response.data.response));
+    }
   } catch (error) {
-    dispatch(action(VERIFY_OTP_FAILED, error));
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        dispatch(action(VERIFY_OTP_FAILED, error.response.data));
+        dispatch(action(VERIFY_OTP_FAILED, error.response.status));
+        dispatch(action(VERIFY_OTP_FAILED, error.response.headers));
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        dispatch(action(VERIFY_OTP_FAILED, error.request));
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        dispatch(action(VERIFY_OTP_FAILED, error.message));
+      }
+      dispatch(action(VERIFY_OTP_FAILED, error.config));
   }
 };
 
 
 export const registerNewUser = (user) => async (dispatch) => {
+  console.log("user information:", user);
   dispatch(action(LOADING_STATE, true));
   try {
     const response = await axios({
       method: "POST",
-      url: `${api_url}/auth/register/complete`,
+      url: `https://citizen-monitor.onrender.com/auth/register/complete`,
       data: user,
     });
-    storeToken("token", response.data.token);
-    dispatch(action(REGISTER_NEW_USER_SUCCESS, response.data.token));
+    dispatch(action(REGISTER_NEW_USER_SUCCESS, response));
     dispatch(action(SHOW_AUTH_TOAST, true));
     dispatch(action(LOADING_STATE, false));
-    setTimeout(() => {
+    setTimeout(()=>{
       dispatch(action(SHOW_AUTH_TOAST, false));
-    }, 1500);
+    }, 3000);
   } catch (error) {
-    dispatch(action(REGISTER_NEW_USER_FAILED, error.response.data));
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      dispatch(action(REGISTER_NEW_USER_FAILED, error.response.data));
+      dispatch(action(REGISTER_NEW_USER_FAILED, error.response.status));
+      dispatch(action(REGISTER_NEW_USER_FAILED, error.response.headers));
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      dispatch(action(REGISTER_NEW_USER_FAILED, error.request));
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      dispatch(action(REGISTER_NEW_USER_FAILED, error.message));
+    }
+    dispatch(action(REGISTER_NEW_USER_FAILED, error.config));
   }
 };
 

@@ -1,50 +1,85 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from '../../screens/auth/login';
-import Register from '../../screens/auth/register';
-import EmailVerification from '../../screens/auth/register/verifyEmail';
-import StartingRegistration from '../../screens/auth/register/register';
-import Onboarding from '../../screens/onboarding';
-import UmuturageDashboard from '../../component/ui/navigation/umuturage';
-import PrivacyPolicy from '../../screens/privacyPolicy';
-import TermsOfUse from '../../screens/termsOfUse';
-import Notification from '../../screens/notification';
-import Migrate from '../../screens/migrate';
-import PasswordRecovery from '../../screens/auth/login/passwordRecovery';
-import RegisterFamilyMember from '../../screens/familyMember/register';
-import Vistor from '../../screens/vistors';
-import Settings from '../../screens/settings';
-import MuduguduDashboard from '../../component/ui/navigation/mudugudu';
-import MutwaraSiboDashboard from '../../component/ui/navigation/mutwaraSibo';
-import RegisterSuccess from '../../screens/auth/register/onRegisterSuccess';
-import CompleteRegistaration from '../../screens/auth/register/completeRegister'
-import RequestSuccess from '../../screens/familyMember/register/onRegisterSuccess';
+import React, { useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Login from "../../screens/auth/login";
+import Register from "../../screens/auth/register";
+import EmailVerification from "../../screens/auth/register/verifyEmail";
+import StartingRegistration from "../../screens/auth/register/register";
+import Onboarding from "../../screens/onboarding";
+import UmuturageDashboard from "../../component/ui/navigation/umuturage";
+import PrivacyPolicy from "../../screens/privacyPolicy";
+import TermsOfUse from "../../screens/termsOfUse";
+import Notification from "../../screens/notification";
+import Migrate from "../../screens/migrate";
+import PasswordRecovery from "../../screens/auth/login/passwordRecovery";
+import RegisterFamilyMember from "../../screens/familyMember/register";
+import Vistor from "../../screens/vistors";
+import Settings from "../../screens/settings";
+import MuduguduDashboard from "../../component/ui/navigation/mudugudu";
+import MutwaraSiboDashboard from "../../component/ui/navigation/mutwaraSibo";
+import RegisterSuccess from "../../screens/auth/register/onRegisterSuccess";
+import CompleteRegistaration from "../../screens/auth/register/completeRegister";
+import RequestSuccess from "../../screens/familyMember/register/onRegisterSuccess";
 const Stack = createNativeStackNavigator();
+import { Init } from "../../redux/actions/authAction";
+import { useSelector, useDispatch } from "react-redux";
 
 function AppNavigator() {
+  const { userToken, initialLogin, logoutSuccess } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const iniLogin = async () => {
+    await dispatch(Init());
+  };
+  useEffect(() => {
+    iniLogin();
+  }, [initialLogin,logoutSuccess]);
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='onboarding' screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="onboarding" component={Onboarding}/>
-        <Stack.Screen name="umuturage" component={UmuturageDashboard} />
-        <Stack.Screen name="notification" component={Notification} />
-        <Stack.Screen name="terms" component={TermsOfUse} />
-        <Stack.Screen name="policy" component={PrivacyPolicy} />
-        <Stack.Screen name="migrate" component={Migrate} />
-        <Stack.Screen name="RegisterFamilyMember" component={RegisterFamilyMember} />
-        <Stack.Screen name="vistor" component={Vistor} />
-        <Stack.Screen name="settings" component={Settings}/>
-        <Stack.Screen name="mudugudu" component={MuduguduDashboard}/>
-        <Stack.Screen name="mutwaraSibo" component={MutwaraSiboDashboard}/>
-        <Stack.Screen name="login" component={Login} />
-        <Stack.Screen name="register" component={Register} />
-        <Stack.Screen name="emailVerification" component={EmailVerification} />
-        <Stack.Screen name="paswordRecovery" component={PasswordRecovery} />
-        <Stack.Screen name="startingRegistration" component={StartingRegistration} />
-        <Stack.Screen name="onRegisterSuccess" component={RegisterSuccess}/>
-        <Stack.Screen name="completeRegisteration" component={CompleteRegistaration}/>
-        <Stack.Screen name="success" component={RequestSuccess} />
+      <Stack.Navigator
+        initialRouteName="onboarding"
+        screenOptions={{ headerShown: false }}
+      >
+        {userToken ? (
+          <>
+            <Stack.Screen name="umuturage" component={UmuturageDashboard} />
+            <Stack.Screen name="notification" component={Notification} />
+            <Stack.Screen name="migrate" component={Migrate} />
+            <Stack.Screen
+              name="RegisterFamilyMember"
+              component={RegisterFamilyMember}
+            />
+            <Stack.Screen name="vistor" component={Vistor} />
+            <Stack.Screen name="settings" component={Settings} />
+            <Stack.Screen name="mudugudu" component={MuduguduDashboard} />
+            <Stack.Screen name="mutwaraSibo" component={MutwaraSiboDashboard} />
+            <Stack.Screen name="success" component={RequestSuccess} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="onboarding" component={Onboarding} />
+            <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="register" component={Register} />
+            <Stack.Screen
+              name="emailVerification"
+              component={EmailVerification}
+            />
+            <Stack.Screen name="paswordRecovery" component={PasswordRecovery} />
+            <Stack.Screen
+              name="startingRegistration"
+              component={StartingRegistration}
+            />
+            <Stack.Screen
+              name="onRegisterSuccess"
+              component={RegisterSuccess}
+            />
+            <Stack.Screen
+              name="completeRegisteration"
+              component={CompleteRegistaration}
+            />
+            <Stack.Screen name="terms" component={TermsOfUse} />
+            <Stack.Screen name="policy" component={PrivacyPolicy} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
