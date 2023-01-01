@@ -8,7 +8,6 @@ import { userInfo } from "../../utils/userInfo";
 const Home = () => {
     const navigation = useNavigation();
     const [userInformations, setUserInformations] = useState();
-    console.log(userInformations?.profile?.firstName);
     useEffect(()=>{
         userInfo().then((response)=>{
             setUserInformations(response); 

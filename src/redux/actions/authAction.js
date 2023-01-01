@@ -143,7 +143,6 @@ export const verifyOtp = (verifyData) => async (dispatch) => {
 
 
 export const registerNewUser = (user) => async (dispatch) => {
-  console.log("user information:", user);
   dispatch(action(LOADING_STATE, true));
   try {
     const response = await axios({

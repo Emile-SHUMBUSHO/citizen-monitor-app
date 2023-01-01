@@ -7,8 +7,12 @@ import { Selector, MainInput } from '../../component/inputs';
 import { PrimaryButton } from '../../component/buttons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { leftVillage } from '../../redux/actions/displacementAction';
+import Loader from '../../component/loader/loader';
 
 const Migrate = () => {
+    const {isLoading} = useSelector((state)=> state.displacement);
     const { Provinces, Districts, Sectors, Cells, Villages } = require('rwanda');
     const [selectedProvince, setSelectedProvince] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -21,8 +25,20 @@ const Migrate = () => {
     const [selectedHomeInfo, setSelectedHomeInfo] = useState('');
     const isibo = ['Ubumwe', 'Bwiza', 'Buhoro'];
     const [selectedIsibo, setSelectedIsibo] = useState('');
+    const displacementData = {
+        province: selectedProvince,
+        district: selectedDistrict,
+        sector: selectedSector,
+        cell: selectedCell,
+        village: selectedVillage,
+    }
+    const dispatch =useDispatch();
+    const displacementFunc = ()=>{
+        dispatch(leftVillage(displacementData))
+    }
     return(
         <Container>
+            <Loader visible={isLoading}/>
             <MainHeader>
                 <View style={{
                     flexDirection: "row",
@@ -74,13 +90,19 @@ const Migrate = () => {
                         onSelect={(selectedItem)=>{setSelectedCell(selectedItem)}}
                     />
                     <Selector
+                        data={Villages(selectedProvince,selectedDistrict,selectedSector,selectedCell)}
+                        placeholder={'Village'}
+                        onSelect={(selectedItem)=>{setSelectedVillage(selectedItem)}}
+                    />
+                    <Selector
                         data={isibo}
                         placeholder={'Isibo'}
                         onSelect = {(selectedItem)=>{setSelectedIsibo(selectedItem)}}
                     />
                     </Card>
                     <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                        <PrimaryButton onPress={()=> navigation.navigate('RegisterFamilyMember',{familyNumber})} title="Submit"/>
+                        {/* <PrimaryButton onPress={()=> navigation.navigate('RegisterFamilyMember',{familyNumber})} title="Submit"/> */}
+                        <PrimaryButton onPress={()=> displacementFunc()} title="Submit"/>
                     </View>
                 </ScrollView>
             </Content>

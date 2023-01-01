@@ -1,4 +1,3 @@
-import action from "../actions/action";
 import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILED,
