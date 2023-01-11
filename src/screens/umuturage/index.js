@@ -8,13 +8,14 @@ import { userInfo } from "../../utils/userInfo";
 const Home = () => {
     const navigation = useNavigation();
     const [userInformations, setUserInformations] = useState();
+    console.log("status:", userInformations?.user?.status);
     useEffect(()=>{
         userInfo().then((response)=>{
             setUserInformations(response); 
         })
     },[]);
      return(
-        <HomeWrapper title="Hello, John" navigation={()=>navigation.navigate('notification')}>
+        <HomeWrapper title={userInformations?.profile?.lastName + " " + userInformations?.profile?.firstName} navigation={()=>navigation.navigate('notification')}>
             <View style={{
                     backgroundColor: "white",
                     shadowColor: "#000",
@@ -34,14 +35,13 @@ const Home = () => {
                 }}>
                     <View>
                         <Text>Ibaruze mu mudugudu</Text>
-                        <Text>It's easy start now</Text>
                     </View>
                     <TouchableOpacity onPress={()=> navigation.navigate('migrate')}>
                         <AntDesign name="rightcircle" size={24} color="black" />
                     </TouchableOpacity>
                     
             </View>
-
+{/* 
             <View style={{
                     backgroundColor: "white",
                     shadowColor: "#000",
@@ -67,18 +67,18 @@ const Home = () => {
                         <AntDesign name="rightcircle" size={24} color="black" />
                     </TouchableOpacity>
                     
-            </View>
+            </View> */}
 
-            <Text style={{marginVertical:20, fontSize: 18, fontWeight:'700'}}>Your current residence</Text>
+            <Text style={{marginVertical:20, fontSize: 18, fontWeight:'700'}}>Current residence</Text>
             <Card>
                 <View style={{padding: 10}}>
-                    <Text>Kigali, City</Text>
-                    <Text>Nyarugenge, District</Text>
-                    <Text>Nyamirambo, Sector</Text>
-                    <Text>Kivugiza, Cell</Text>
-                    <Text>Bwiza, Village</Text>
+                    <Text>Province: {userInformations?.profile?.province}</Text>
+                    <Text>District: {userInformations?.profile?.district}</Text>
+                    <Text>Sector: {userInformations?.profile?.sector}</Text>
+                    <Text>Cell: {userInformations?.profile?.cell}</Text>
+                    <Text>Village: {userInformations?.profile?.village}</Text>
                 </View>
-                <View style={{
+                {/* <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     padding:10,
@@ -87,7 +87,7 @@ const Home = () => {
                         Mudugudu, Cheif: Masirabo Didie
                     </Text>
                     <AntDesign name="rightcircle" size={24} color="black" />
-                </View>
+                </View> */}
             </Card>
         </HomeWrapper>
     )

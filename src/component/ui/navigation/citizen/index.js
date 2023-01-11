@@ -1,13 +1,15 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome5, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons';
 import  Home  from '../../../../screens/umuturage';
 import Profile from '../../../../screens/profile';
-import Search from '../../../../screens/search';
+import migrationHistory from '../../../../screens/history';
 import MainNavigator from '../main';
+import { useState } from 'react';
+
 const Tab = createBottomTabNavigator();
 
-function UmuturageDashboard() {
+function CitizenDashboard() {
   return (
     <MainNavigator>
       <Tab.Screen
@@ -18,10 +20,10 @@ function UmuturageDashboard() {
         }}
       />
       <Tab.Screen
-        name="Search"
-        component={Search}
+        name="History"
+        component={migrationHistory}
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="ios-search-circle-sharp" size={24} color="black" />,
+          tabBarIcon: ({ color, size }) => <AntDesign name="areachart" size={24} color="black" />,
         }}
       />
       <Tab.Screen
@@ -35,4 +37,4 @@ function UmuturageDashboard() {
   );
 }
 
-export default UmuturageDashboard;
+export default CitizenDashboard;

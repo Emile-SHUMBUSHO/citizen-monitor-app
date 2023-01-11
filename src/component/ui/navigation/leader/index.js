@@ -1,13 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, FontAwesome, Ionicons } from '@expo/vector-icons';
-import  Home  from '../../../../screens/mudugudu';
-import Profile from '../../../../screens/profile';
-import Search from '../../../../screens/search';
+import Home from './home';
+import Profile from './settings';
+import SearchForCitizen from './search';
 import MainNavigator from '../main';
 const Tab = createBottomTabNavigator();
 
-function MuduguduDashboard() {
+function  LeaderDashboard() {
   return (
     <MainNavigator>
       <Tab.Screen
@@ -19,7 +19,7 @@ function MuduguduDashboard() {
       />
       <Tab.Screen
         name="Search"
-        component={Search}
+        component={SearchForCitizen}
         options={{
           tabBarIcon: ({ color, size }) => <Ionicons name="ios-search-circle-sharp" size={24} color="black" />,
         }}
@@ -35,4 +35,4 @@ function MuduguduDashboard() {
   );
 }
 
-export default MuduguduDashboard;
+export default LeaderDashboard;

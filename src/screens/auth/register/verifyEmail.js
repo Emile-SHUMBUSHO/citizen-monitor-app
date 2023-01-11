@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, Alert, View } from "react-native";
 import { useState, useEffect } from "react";
 import {
   CodeField,
@@ -13,29 +13,36 @@ import Auth from "../../../layout/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { verifyOtp } from "../../../redux/actions/authAction";
 import Loader from "../../../component/loader/loader";
+import { PrimaryButton } from "../../../component/buttons";
 
 const EmailVerification = () => {
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading, currentVerifyOtpScreen} = useSelector((state) => state.auth);
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [value, setValue] = useState("");
+  let code = [];
+  code.push(value);
   const verifyData = {
     email: email,
     code: value,
   };
+
   const dispatch = useDispatch();
   const checkOtp = () => {
-    dispatch(verifyOtp(verifyData)).then(() => {
-      setTimeout(() => {
-          navigation.navigate("startingRegistration");
-      },3000);
-    });
+    if (code[0].length !== 6) {
+      Alert.alert("OTP Code not complete");
+      return false;
+    } else {
+      dispatch(verifyOtp(verifyData, "startingRegistration"));
+    }
   };
+
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
   const getUserEmail = async () => {
     const response = await AsyncStorage.getItem("email");
     const email = JSON.parse(response).email;
@@ -43,11 +50,15 @@ const EmailVerification = () => {
   };
   useEffect(() => {
     getUserEmail();
-  }, []);
+    if(currentVerifyOtpScreen){
+      navigation.navigate(currentVerifyOtpScreen);
+    };
+  }, [currentVerifyOtpScreen, navigation]
+  )
   return (
     <Auth
       title="Enter verification code to verify your email"
-      bottomTitle="Code sent to your email"
+      bottomTitle=" Verification code were sent to your email"
     >
       <Loader visible={isLoading} />
       <CodeField
@@ -70,9 +81,9 @@ const EmailVerification = () => {
           </Text>
         )}
       />
-      <TouchableOpacity onPress={() => checkOtp()}>
-        <Text style={{ fontWeight: "bold", fontSize: 15 }}>Check OTP</Text>
-      </TouchableOpacity>
+      <View style={{flexDirection: "row", justifyContent:"center", alignContent:"center"}}>
+        <PrimaryButton onPress={() => checkOtp()} title="Verify OTP" />
+      </View>
     </Auth>
   );
 };

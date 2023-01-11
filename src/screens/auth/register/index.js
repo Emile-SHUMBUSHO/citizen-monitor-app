@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Checkbox } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkEmail } from "../../../redux/actions/authAction";
 
 const Register = () => {
-  const { isLoading, showAuthToast} = useSelector((state) => state.auth);
+  const { isLoading, showAuthToast, currentVerifyEmailScreen} = useSelector((state) => state.auth);
   const [checked, setChecked] = useState(false);
   const [inputs, setInputs] = useState({
     email: "",
@@ -47,12 +47,14 @@ const Register = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const checkUserEmail = ()=>{
-    dispatch(checkEmail(inputs.email)).then(()=>{
-      setTimeout(()=>{
-        navigation.navigate("emailVerification");
-      }, 3500);
-    });
+    dispatch(checkEmail(inputs.email, 'emailVerification'));
   }
+
+useEffect(()=>{
+  if(currentVerifyEmailScreen){
+    navigation.navigate(currentVerifyEmailScreen);
+  }
+}, [currentVerifyEmailScreen, navigation]);
   return (
     <View style={styles.container}>
       <Loader visible={isLoading}/>

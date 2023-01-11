@@ -12,6 +12,9 @@ import {
   VERIFY_OTP_FAILED,
   INIT_LOGIN_USER,
   LOGOUT_USER,
+  NAVIGATE_TO_VERIFY_OTP_SCREEN,
+  NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN,
+  NAVIGATE_TO_LOGIN_SCREEN,
 } from "../types";
 
 const initialState = {
@@ -28,6 +31,9 @@ const initialState = {
   success: false,
   showAuthToast: false,
   email: null,
+  currentVerifyEmailScreen: '',
+  currentVerifyOtpScreen: '',
+  currentLoginScreen: '',
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -123,6 +129,21 @@ export default (state = initialState, { type, payload }) => {
         register: [],
         logout: Math.random(),
         success: false,
+      };
+    case NAVIGATE_TO_VERIFY_OTP_SCREEN:
+      return{
+        ...state,
+        currentVerifyEmailScreen: payload,
+      };
+    case  NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN:
+      return{
+        ...state,
+        currentVerifyOtpScreen: payload,
+      }
+    case NAVIGATE_TO_LOGIN_SCREEN:
+      return{
+        ...state,
+        currentLoginScreen: payload,
       };
     case SHOW_AUTH_TOAST:
       return {

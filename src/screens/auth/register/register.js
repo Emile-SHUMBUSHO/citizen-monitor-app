@@ -14,9 +14,9 @@ import Loader from "../../../component/loader/loader";
 import { Toast } from "../../../component/toaster";
 
 const StartingRegistration = () => {
-  const { isLoading, showAuthToast } = useSelector((state) => state.auth);
+  const { isLoading, showAuthToast, currentLoginScreen } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("746446");
+  const [code, setCode] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -47,35 +47,37 @@ const StartingRegistration = () => {
     "Tabaro",
   ];
   const userInfo = {
-    email: email,
-    code: code,
-    firstName: firstName,
-    lastName: lastName,
-    phoneNumber: phone,
-    password: password,
-    ID: id,
-    province: selectedProvince,
-    district: selectedDistrict,
-    sector: selectedSector,
-    cell: selectedCell,
+  email: email,
+  code: code,
+  firstName: firstName,
+  lastName: lastName,
+  phoneNumber: phone,
+  password: password,
+  ID: id,
+  province: selectedProvince,
+  district: selectedDistrict,
+  sector: selectedSector,
+  cell: selectedCell,
+  village: selectedVillage,
   };
 
-  const getUserEmail = async () => {
-    const response = await AsyncStorage.getItem("email");
+  const userEmailAndCode = async () => {
+    const response = await AsyncStorage.getItem("userEmailAndCode");
     const email = JSON.parse(response).email;
+    const code = JSON.parse(response).code;
     setEmail(email);
+    setCode(code);
   };
-  useEffect(() => {
-    getUserEmail();
-  }, []);
   const dispatch = useDispatch();
   const registerCitizen = () => {
-    dispatch(registerNewUser(userInfo)).then(() => {
-      setTimeout(() => {
-        navigation.navigate("login");
-      }, 3000);
-    });
+    dispatch(registerNewUser(userInfo, 'login'));
   };
+  useEffect(() => {
+    userEmailAndCode();
+    if(currentLoginScreen){
+      navigation.navigate(currentLoginScreen);
+    }
+  }, [currentLoginScreen, navigation]);
   return (
     <View style={styles.container}>
       <Loader visible={isLoading} />
