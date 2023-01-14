@@ -6,26 +6,29 @@ import {
   MaterialIcons,
   FontAwesome5,
   Ionicons,
-  AntDesign,
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { Logout } from "../../../../../redux/actions/authAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userInfo } from "../../../../../utils/userInfo";
 
 const Profile = () => {
   const navigation = useNavigation();
   const [userInformations, setUserInformations] = useState();
+  const {currentLoginScreen} = useSelector((state)=>state.auth);
   const dispatch = useDispatch();
   const logutUser = () => {
-    dispatch(Logout());
+    dispatch(Logout("login"));
   };
   useEffect(() => {
     userInfo().then((response) => {
       setUserInformations(response);
     });
-  }, []);
+    if(currentLoginScreen){
+      navigation.navigate(currentLoginScreen);
+    }
+  }, [currentLoginScreen, navigation]);
   return (
     <Container>
       <MainHeader>

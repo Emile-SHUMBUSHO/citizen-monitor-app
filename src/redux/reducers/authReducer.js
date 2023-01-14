@@ -12,6 +12,7 @@ import {
   VERIFY_OTP_FAILED,
   INIT_LOGIN_USER,
   LOGOUT_USER,
+  LOGOUT_USER_SCREEN,
   NAVIGATE_TO_VERIFY_OTP_SCREEN,
   NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN,
   NAVIGATE_TO_LOGIN_SCREEN,
@@ -26,14 +27,16 @@ const initialState = {
   isLoggedIn: false,
   userInfo: [],
   userToken: [],
+  userRole: "",
   register: null,
   logout: null,
   success: false,
   showAuthToast: false,
   email: null,
-  currentVerifyEmailScreen: '',
-  currentVerifyOtpScreen: '',
-  currentLoginScreen: '',
+  currentVerifyEmailScreen: "",
+  currentVerifyOtpScreen: "",
+  currentLoginScreen: "",
+  currentLogoutScreen:"",
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -47,7 +50,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoggedIn: true,
-        userToken: payload,
+        userRole: payload,
       };
     case LOGIN_USER_FAILED:
       return {
@@ -56,13 +59,14 @@ export default (state = initialState, { type, payload }) => {
         isError: true,
         userInfo: "",
       };
+    
     case INIT_LOGIN_USER:
       return {
         ...state,
-        error: '',
+        error: "",
         isError: false,
-        userToken: payload,
-        initialLogin: true
+        userRole: payload,
+        initialLogin: true,
       };
     case CHECK_EMAIL_SUCCESS:
       return {
@@ -126,22 +130,29 @@ export default (state = initialState, { type, payload }) => {
         isLoggedIn: false,
         userInfo: [],
         userToken: [],
+        userRole:"",
         register: [],
         logout: Math.random(),
         success: false,
       };
+
+    case LOGOUT_USER_SCREEN:
+      return {
+        ...state,
+        currentLogoutScreen: payload,
+      };
     case NAVIGATE_TO_VERIFY_OTP_SCREEN:
-      return{
+      return {
         ...state,
         currentVerifyEmailScreen: payload,
       };
-    case  NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN:
-      return{
+    case NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN:
+      return {
         ...state,
         currentVerifyOtpScreen: payload,
-      }
+      };
     case NAVIGATE_TO_LOGIN_SCREEN:
-      return{
+      return {
         ...state,
         currentLoginScreen: payload,
       };

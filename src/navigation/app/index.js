@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "../../screens/auth/login";
@@ -24,37 +24,30 @@ import RegisterSuccess from "../../screens/auth/register/onRegisterSuccess";
 import CompleteRegistaration from "../../screens/auth/register/completeRegister";
 import RequestSuccess from "../../screens/familyMember/register/onRegisterSuccess";
 const Stack = createNativeStackNavigator();
-import { Init } from "../../redux/actions/authAction";
+import { Init } from "../../redux/actions";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
 
 function AppNavigator() {
-  const { userToken, initialLogin, logoutSuccess } = useSelector(
-    (state) => state.auth
-  );
   const dispatch = useDispatch();
-  const iniLogin = async () => {
-    await dispatch(Init());
-  };
+  const { userRole } = useSelector((state) => state.auth);
   useEffect(() => {
-    iniLogin();
-  }, [initialLogin, logoutSuccess]);
-  const [role, setRole] = useState("admin");
+    dispatch(Init());
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="onboarding"
         screenOptions={{ headerShown: false }}
       >
-        {userToken ? (
+        {userRole?.token ? (
           <>
-            {role === "admin" ? (
+            {userRole?.user?.role === "admin" ? (
               <Stack.Screen name="admin" component={AdminDashboard} />
             ) : null}
-            {role === "leader" ? (
+            {userRole?.user?.role === "chef" ? (
               <Stack.Screen name="mudugudu" component={LeaderDashboard} />
             ) : null}
-            {role === "citizen" ? (
+            {userRole?.user?.role === "normal" ? (
               <Stack.Screen name="umuturage" component={CitizenDashboard} />
             ) : null}
             <Stack.Screen name="notification" component={Notification} />
@@ -75,8 +68,8 @@ function AppNavigator() {
           </>
         ) : (
           <>
-            <Stack.Screen name="onboarding" component={Onboarding} />
             <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="onboarding" component={Onboarding} />
             <Stack.Screen name="register" component={Register} />
             <Stack.Screen
               name="emailVerification"

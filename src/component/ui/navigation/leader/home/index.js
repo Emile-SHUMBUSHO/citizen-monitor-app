@@ -33,7 +33,6 @@ const chartConfig = {
 
 const Home = () => {
   const navigation = useNavigation();
-  const { isLoading } = useSelector((state) => state.displacement);
   const [userInformations, setUserInformations] = useState();
   const dispatch = useDispatch();
   const approveCitizenFunc = () => {
@@ -50,9 +49,8 @@ const Home = () => {
   return (
     <HomeWrapper
       title="Hello, John"
-      navigation={() => navigation.navigate("notificationForLeader")}
+      navigation={() => navigation.navigate("Citizens Request")}
     >
-      <Loader visible={isLoading} />
       <Card style={{ marginVertical: 10 }}>
         <Text style={{ textAlign: "center", fontSize: 18, margin: 15 }}>
           Murakaza neza kuri, Citizen Monitor App

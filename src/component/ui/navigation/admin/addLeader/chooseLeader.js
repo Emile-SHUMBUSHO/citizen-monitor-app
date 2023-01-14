@@ -1,22 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Container } from "../../../containers";
 import { MainHeader } from "../../../../header";
 import { Content } from "../../../containers";
 import { Searchbar, Card } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
-import ModalPoup from "../../../../modal";
-import CitizenModal from "./citizensModal";
+import ModalPoup from "../../../../../component/modal";
+import { PrimaryButton } from "../../../../buttons";
+import { appointAleader } from "../../../../../redux/actions";
+import { disappointAleader } from "../../../../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../../loader/loader";
 
 const ChooseLeader = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
-  const [visible, setVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [role, setRole] = useState("chef");
+
+  const handlePress = (item) => {
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const { isLoading, citizens } = useSelector((state) => state.admin);
+  const dispatch = useDispatch();
+  const appoint = () => {
+    dispatch(appointAleader(selectedItem.userId));
+  };
+
+  const disappoint = () => {
+    dispatch(disappointAleader(selectedItem.userId));
+  };
+
+  useEffect(() => {
+   if (isLoading){
+    setShowModal(false);
+   }
+  }, [isLoading]);
+
   return (
     <Container>
+      <Loader visible={isLoading} />
       <MainHeader>
         <View
           style={{
@@ -40,230 +69,68 @@ const ChooseLeader = () => {
             onChangeText={onChangeSearch}
             value={searchQuery}
           />
-          <Card style={{ marginVertical: 20, padding: 5 }}>
-            <ScrollView>
-            <TouchableOpacity
-            onPress={()=> setVisible(true)}
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>SHUMBUSHO Emile</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Ndagijimana Joseph</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Dushimimana Claude</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>SHUMBUSHO Emile</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Ndagijimana Joseph</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Dushimimana Claude</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>SHUMBUSHO Emile</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Ndagijimana Joseph</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Dushimimana Claude</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>SHUMBUSHO Emile</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Ndagijimana Joseph</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                borderBottomColor: "black",
-                borderBottomWidth: 1,
-                marginVertical: 20,
-                flexDirection: "row",
-                alignItems:"center",
-                justifyContent:"space-between",
-                padding:5
-              }}
-            >
-              <Text>Dushimimana Claude</Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-            </ScrollView>
-          </Card>
+          {citizens?.length === 0 ? (
+            <Text style={styles.infoTxt}>
+              No Citizens registered at selected village
+            </Text>
+          ) : (
+            <Text style={styles.infoTxt}>All Citizens In The Village</Text>
+          )}
+          <ScrollView>
+            {citizens?.map((request, index) => {
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handlePress(request)}
+                  style={{
+                    backgroundColor: "white",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderRadius: 5,
+                    padding: 10,
+                    marginVertical: 20,
+                  }}
+                >
+                  <Text>SHUMBUSHO Emile</Text>
+                  {role === "chef" ? (
+                    <AntDesign name="rightcircle" size={24} color="#FFA726" />
+                  ) : (
+                    <AntDesign name="checkcircle" size={24} color="black" />
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         </Content>
       </View>
-      <CitizenModal visible={visible} setVisible={setVisible}/>
+      <ModalPoup visible={showModal}>
+        <View style={{ marginVertical: 40 }}>
+          <Text style={{ textAlign: "center", fontSize: 18 }}>
+            Are you sure you want to appoint Emile SHUMBUSHO as a village chef
+            of Muhabura
+          </Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between", alignItems:"center"}}
+          >
+            <PrimaryButton title="cancel" onPress={() => setShowModal(false)} />
+            {role === "chef" ? (
+              <PrimaryButton title="disppoint" onPress={() => disappoint()} />
+            ) : (
+              <PrimaryButton title="appoint" onPress={() => appoint()} />
+            )}
+
+          </View>
+        </View>
+      </ModalPoup>
     </Container>
   );
 };
@@ -276,6 +143,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
+  },
+  infoTxt: {
+    textAlign: "center",
+    marginVertical: 10,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

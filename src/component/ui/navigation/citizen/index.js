@@ -5,7 +5,6 @@ import  Home  from '../../../../screens/umuturage';
 import Profile from '../../../../screens/profile';
 import migrationHistory from '../../../../screens/history';
 import MainNavigator from '../main';
-import { useState } from 'react';
 
 const Tab = createBottomTabNavigator();
 

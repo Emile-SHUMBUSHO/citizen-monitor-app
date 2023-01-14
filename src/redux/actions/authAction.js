@@ -32,6 +32,7 @@ export const loginUser = (user) => async (dispatch) => {
     });
     dispatch(action(LOGIN_STATE, false));
     if (response.status >= 400) {
+      dispatch(action(LOGIN_STATE, false));
       dispatch(action(LOGIN_USER_FAILED, response.error));
     } else {
       await AsyncStorage.setItem("AuthData", JSON.stringify(response.data));
@@ -41,6 +42,7 @@ export const loginUser = (user) => async (dispatch) => {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
+      dispatch(action(LOGIN_STATE, false));
       dispatch(action(LOGIN_USER_FAILED, error.response.data));
       dispatch(action(LOGIN_USER_FAILED, error.response.status));
       dispatch(action(LOGIN_USER_FAILED, error.response.headers));
@@ -53,6 +55,7 @@ export const loginUser = (user) => async (dispatch) => {
       // Something happened in setting up the request that triggered an Error
       dispatch(action(LOGIN_USER_FAILED, error.message));
     }
+    dispatch(action(LOGIN_STATE, false));
     dispatch(action(LOGIN_USER_FAILED, error.config));
   }
 };
@@ -61,24 +64,15 @@ export const Init = () => {
   return async (dispatch) => {
     try {
       const res = await AsyncStorage.getItem("AuthData");
-      const token = JSON.parse(res)?.token;
-      dispatch(action(INIT_LOGIN_USER, token));
+      const authData = JSON.parse(res)
+      dispatch(action(INIT_LOGIN_USER, authData));
     } catch (err) {
       alert(err.message);
     }
   };
 };
 
-export const Logout = () => {
-  return async (dispatch) => {
-    try {
-      await AsyncStorage.removeItem("AuthData").token;
-      dispatch(action(LOGOUT_USER, true));
-    } catch (err) {
-      alert(err.message);
-    }
-  };
-};
+
 
 export const checkEmail = (email, screenName) => async (dispatch) => {
   dispatch(action(LOADING_STATE, true));
@@ -108,7 +102,7 @@ export const checkEmail = (email, screenName) => async (dispatch) => {
     }
   } catch (err) {
     dispatch(action(CHECK_EMAIL_FAILED, err.message));
-    Alert.alert(err.message)
+    Alert.alert(err.message);
   }
 };
 
@@ -126,8 +120,11 @@ export const verifyOtp = (verifyData, screenName) => async (dispatch) => {
     } else {
       dispatch(action(LOADING_STATE, false));
       dispatch(action(VERIFY_OTP_SUCCESS, response.data.response));
-      await AsyncStorage.setItem("userEmailAndCode", JSON.stringify(response.data.response));
-      dispatch(action(  NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN, screenName));
+      await AsyncStorage.setItem(
+        "userEmailAndCode",
+        JSON.stringify(response.data.response)
+      );
+      dispatch(action(NAVIGATE_TO_COMPLETE_REGISTRATION_SCREEN, screenName));
     }
   } catch (error) {
     if (error.response) {
@@ -160,9 +157,9 @@ export const registerNewUser = (user, screenName) => async (dispatch) => {
       data: user,
     });
     dispatch(action(LOADING_STATE, false));
-    if(response.status >= 400){
+    if (response.status >= 400) {
       dispatch(action(REGISTER_NEW_USER_FAILED, response.error));
-    }else{
+    } else {
       dispatch(action(REGISTER_NEW_USER_SUCCESS, response));
       dispatch(action(NAVIGATE_TO_LOGIN_SCREEN, screenName));
     }
@@ -185,4 +182,16 @@ export const registerNewUser = (user, screenName) => async (dispatch) => {
     }
     dispatch(action(REGISTER_NEW_USER_FAILED, error.config));
   }
+};
+
+export const Logout = (screenName) => {
+  return async (dispatch) => {
+    try {
+      await AsyncStorage.removeItem("AuthData").token;
+      dispatch(action(NAVIGATE_TO_LOGIN_SCREEN, screenName));
+      dispatch(action(LOGOUT_USER, true));
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 };

@@ -1,10 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons, AntDesign } from "@expo/vector-icons";
 import Settings from "./settings";
 import MainNavigator from "../main";
 import Home from "./home";
-
+import PointLeader from "./addLeader";
 const Tab = createBottomTabNavigator();
 
 function AdminDashboard() {
@@ -19,6 +19,16 @@ function AdminDashboard() {
           ),
         }}
       />
+      <Tab.Screen
+        name="Appoint A leader"
+        component={PointLeader}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="adduser" size={24} color="black" />
+          ),
+        }}
+      />
+      
       <Tab.Screen
         name="Settings"
         component={Settings}
