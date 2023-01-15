@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, FontAwesome, AntDesign } from '@expo/vector-icons';
-import  Home  from '../../../../screens/umuturage';
-import Profile from '../../../../screens/profile';
+import Home from './home';
+import Profile from './profile';
 import migrationHistory from '../../../../screens/history';
 import MainNavigator from '../main';
 

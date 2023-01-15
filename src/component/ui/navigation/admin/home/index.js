@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import React,{useEffect, useState} from "react";
+import { Text, StyleSheet, View, Dimensions, ScrollView, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import HomeWrapper from "../../../../../layout/main";
 import { AntDesign } from "@expo/vector-icons";
@@ -11,16 +11,57 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from "react-native-chart-kit";
+import { Container, Content } from "../../../containers";
+import { MainHeader } from "../../../../header";
+import { Notification } from "../../../../notification";
+import { userInfo } from "../../../../../utils/userInfo";
 
 const Home = () => {
   const navigation = useNavigation();
-
+  const [userInformations, setUserInformations] = useState();
+  useEffect(() => {
+    userInfo().then((response) => {
+      setUserInformations(response);
+    });
+  }, []);
   return (
-    <HomeWrapper
-      title="Hello, Admin"
-      navigation={() => navigation.navigate("notification")}
-    >
-      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+    <Container>
+    <MainHeader>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginHorizontal: 10,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require("../../../../../../assets/profile.webp")}
+            style={{ width: 50, height: 50, borderRadius: 30 }}
+          />
+          <Text
+            style={{ color: "#fff", paddingHorizontal: 10, fontSize: 18 }}
+          >
+            {userInformations?.profile?.lastName}{" "}
+            {userInformations?.profile?.firstName}
+          </Text>
+        </View>
+
+        <Notification
+          title="5"
+          onPress={() => navigation.navigate("Citizens Request")}
+        />
+      </View>
+    </MainHeader>
+    <Content>
+    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
         <View
           style={{
             backgroundColor: "white",
@@ -109,7 +150,8 @@ const Home = () => {
           }}
         />
       </ScrollView>
-    </HomeWrapper>
+    </Content>
+    </Container>
   );
 };
 const styles = StyleSheet.create({});

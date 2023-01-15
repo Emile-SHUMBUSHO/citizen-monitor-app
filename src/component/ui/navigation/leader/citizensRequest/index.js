@@ -80,7 +80,7 @@ const CitizensRequest = () => {
                     marginVertical: 20,
                   }}
                 >
-                  <Text>{request.id}</Text>
+                  <Text>{request?.useraddr?.user?.lastName} {request?.useraddr?.user?.firstName}</Text>
                   <AntDesign name="rightcircle" size={24} color="#FFA726" />
                 </TouchableOpacity>
               );
@@ -91,13 +91,13 @@ const CitizensRequest = () => {
       <ModalPoup visible={showModal}>
         <View style={{ marginVertical: 40 }}>
           <Text style={{ textAlign: "center", fontSize: 18 }}>
-            Names: Emile SHUMBUSHO
+            Names: {selectedItem?.useraddr?.user?.lastName} {selectedItem?.useraddr?.user?.firstName}
           </Text>
           <Text style={{ textAlign: "center", fontSize: 18 }}>
-            ID: 119978017005088
+            ID: {selectedItem?.useraddr?.user?.ID}
           </Text>
           <Text style={{ textAlign: "center", fontSize: 18 }}>
-            Telephone: 0785188981
+            Telephone: {selectedItem?.useraddr?.user?.phoneNumber}
           </Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}

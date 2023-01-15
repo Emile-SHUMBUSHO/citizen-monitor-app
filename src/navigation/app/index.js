@@ -10,6 +10,7 @@ import PrivacyPolicy from "../../screens/privacyPolicy";
 import TermsOfUse from "../../screens/termsOfUse";
 import Notification from "../../screens/notification";
 import NotificationForLeader from "../../component/ui/navigation/leader/notifications";
+import NotificationForCitizen from "../../component/ui/navigation/citizen/notifications";
 import Migrate from "../../screens/migrate";
 import PasswordRecovery from "../../screens/auth/login/passwordRecovery";
 import RegisterFamilyMember from "../../screens/familyMember/register";
@@ -54,6 +55,10 @@ function AppNavigator() {
             <Stack.Screen
               name="notificationForLeader"
               component={NotificationForLeader}
+            />
+            <Stack.Screen
+              name="notificationForCitizen"
+              component={NotificationForCitizen}
             />
             <Stack.Screen name="migrate" component={Migrate} />
             <Stack.Screen

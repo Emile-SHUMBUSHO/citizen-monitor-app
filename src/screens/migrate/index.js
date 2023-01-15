@@ -62,7 +62,7 @@ const Migrate = () => {
             <AntDesign name="arrowleft" size={24} color="white" />
           </TouchableOpacity>
           <Text style={{ color: "#fff", marginHorizontal: 10, }}>
-            Request to join a village
+          Request for village enrollment
           </Text>
         </View>
       </MainHeader>
@@ -70,30 +70,9 @@ const Migrate = () => {
         {status ? (
           <>
             <ScrollView showsVerticalScrollIndicator={false}>
-              {/* <Card
-                style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 10,
-                  backgroundColor: "#f8f9fa",
-                }}
-              >
-                <Selector
-                  label="Uratuye Cyangwa Urakodesha?"
-                  data={homeInfo}
-                  onSelect={(selectedItem) => {
-                    setSelectedHomeInfo(selectedItem);
-                  }}
-                  placeholder={"Home status"}
-                />
-                <MainInput
-                  placeholder={"Umubare wabagize umuryango"}
-                  keyboardType="numeric"
-                  returnKey="next"
-                  onChangeText={(text) => setFamilyNumber(text)}
-                />
-              </Card> */}
+
               <Text style={{ paddingVertical: 20, fontSize: 18 }}>
-                Address of a village to join
+                Destination of a village to enroll in
               </Text>
               <Card
                 style={{ paddingHorizontal: 10, backgroundColor: "#f8f9fa" }}

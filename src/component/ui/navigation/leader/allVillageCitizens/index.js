@@ -10,14 +10,27 @@ import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { Table, Row, Rows } from "react-native-table-component";
 import { userInfo } from "../../../../../utils/userInfo";
+import { getAllVillageCitizens } from "../../../../../redux/actions/leaderAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const AllVillageCitizens = () => {
+  const {citizensInVillage, isLoading} = useSelector((state)=> state.leader);
   const [userInformations, setUserInformations] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
     userInfo().then((response) => {
       setUserInformations(response);
     });
+    dispatch(getAllVillageCitizens(data));
   }, []);
+  const data = {
+    province:userInformations?.profile?.province,
+    district:userInformations?.profile?.district,
+    sector:userInformations?.profile?.sector,
+    cell:userInformations?.profile?.cell,
+    village:userInformations?.profile?.village,
+  }
+  
   const [tableHead, setTableHead] = useState([
     "No",
     "First Name",
@@ -39,6 +52,11 @@ const AllVillageCitizens = () => {
     ["", "", "", "", ""],
     ["", "", "", "", ""],
   ]);
+
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1; // January is 0, so we need to add 1
+  const year = today.getFullYear();
 
   const html = `<html>
   <head>
@@ -110,11 +128,11 @@ const AllVillageCitizens = () => {
       <img src="../../../../../../assets/logo.png" alt="" />
       <div class="text">
         <h3>Government of Rwanda</h3>
-        <h4>Province:</h4>
-        <h4>District:</h4>
-        <h4>Sector:</h4>
-        <h4>Cell</h4>
-        <h4>Village:</h4>
+        <h4>Province:${userInformations?.profile?.province}</h4>
+        <h4>District:${userInformations?.profile?.district}</h4>
+        <h4>Sector:${userInformations?.profile?.sector}</h4>
+        <h4>Cell: ${userInformations?.profile?.cell}</h4>
+        <h4>Village:${userInformations?.profile?.Village}</h4>
         <h4>Village chef: ${userInformations?.profile?.lastName}${" "}${
     userInformations?.profile?.firstName
   }</h4>
@@ -122,7 +140,7 @@ const AllVillageCitizens = () => {
       </div>
     </div>
     <div class="right">
-      <h4>Date:</h4>
+      <h4>Date:${day}/${month}/${year}</h4>
     </div>
   </div>
   <hr />
@@ -158,6 +176,7 @@ const AllVillageCitizens = () => {
   };
   return (
     <Container>
+      <Loader visible={isLoading}/>
       <MainHeader>
         <View
           style={{
@@ -180,14 +199,17 @@ const AllVillageCitizens = () => {
               textStyle={styles.heading}
             />
             <Rows
-              data={tableData}
+              data={citizensInVillage?.map((data) => {
+                let nbr = 0
+                return [nbr+1, data.cell, data.sector, data.district, data.province];
+              })}
               textStyle={styles.text}
               rowStyle={styles.row}
               alternateRowStyle={styles.evenRow}
             />
           </Table>
           <View style={styles.pdfBtn}>
-            <PrimaryButton onPress={generatePDF} title="Get PDF List" />
+            <PrimaryButton onPress={generatePDF} title="Download PDF file" />
           </View>
         </ScrollView>
       </View>
@@ -215,7 +237,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     backgroundColor: "#f2f2f2",
-    padding: 10,
   },
   text: {
     margin: 6,
